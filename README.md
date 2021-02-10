@@ -44,9 +44,8 @@ Run with
 
 ## Instructors
 
-Muhammad Luqman (Hardware Designing)- [@linked_in_profile](https://www.linkedin.com/in/muhammad-luqman-9b227a11b/)  
 Haider Najeeb   (Computer Vision)-  [@linked_in_profile](https://www.linkedin.com/in/haider-najeeb-68812516a/)  
-
+Muhammad Luqman (Hardware Designing)- [@linked_in_profile](https://www.linkedin.com/in/muhammad-luqman-9b227a11b/)  
 
 ## License
 
