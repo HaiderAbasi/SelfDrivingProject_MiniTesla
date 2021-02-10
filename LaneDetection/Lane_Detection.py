@@ -7,6 +7,7 @@ from utilities import average_2b,findLineParameter,findlaneCurvature,Distance_
 from Lane_Extractor import GetLaneROI
 from Morph_op import FindExtremas,BWContourOpen_speed
 import time
+from sys import platform
 #==========Special Imports====================================
 if (config.debugging==False):
 	from imutils.video.pivideostream import PiVideoStream
@@ -15,8 +16,16 @@ if (config.debugging==False):
 	import argparse
 	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
 #=============================================================
+
+if platform == "linux":
+    vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in2.avi"
+    txt_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/LaneDetection_out.txt"
+    
+else:
+    vid_path = "LaneDetection/Inputs/in2.avi"
+    txt_path = "LaneDetection/Results/LaneDetection_out.txt"
 if (config.debugging):
-	cap = cv2.VideoCapture("LaneDetection/Inputs/in2.avi")
+	cap = cv2.VideoCapture(vid_path)
 	cv2.namedWindow('Vid',cv2.WINDOW_NORMAL)
 	fps = cap.get(cv2.CAP_PROP_FPS)
 	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -528,7 +537,7 @@ def main():
 		waitTime = 1
 	else:
 		cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
-		LaneDetection_results = open("LaneDetection/Results/LaneDetection_out.txt","w")
+		LaneDetection_results = open(txt_path,"w")
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
