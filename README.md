@@ -1,4 +1,4 @@
-# Self Driving Car with Open Cv
+# Self Driving Car with OpenCV
 
 <details open="open">
   <summary>Table of Contents</summary>
