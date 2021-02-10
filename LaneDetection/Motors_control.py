@@ -86,9 +86,3 @@ def beInLane(Max_Sane_dist,distance,curvature):
     setServoAngle(int(angle))
        
 #turnOfCar() // to disconnect all channels of pwm
-        
-
-
-    
-
-
