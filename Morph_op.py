@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 import time
-from utilities_3c_threaded import Distance, Distance_
+from utilities import Distance, Distance_
 
 
 def BwareaOpen(img,MinArea):

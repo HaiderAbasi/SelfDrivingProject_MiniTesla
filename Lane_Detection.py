@@ -8,9 +8,9 @@ import cv2
 import numpy as np 
 import matplotlib as plt
 import math
-from utilities_3c_threaded import average_2b,findLineParameter,findlaneCurvature,Distance_
-from Lane_Extractor_3c_threaded import GetLaneROI
-from Morph_op_3c_threaded import FindExtremas,BWContourOpen_speed
+from utilities import average_2b,findLineParameter,findlaneCurvature,Distance_
+from Lane_Extractor import GetLaneROI
+from Morph_op import FindExtremas,BWContourOpen_speed
 import time
 
 #==========Special Imports====================================

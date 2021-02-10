@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from Morph_op_3c_threaded import BwareaOpen,RetLargestContour,RetLargestContour_OuterLane,RetClosestContour2
+from Morph_op import BwareaOpen,RetLargestContour,RetLargestContour_OuterLane,RetClosestContour2
 import time
 import config
 
