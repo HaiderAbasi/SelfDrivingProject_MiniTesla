@@ -17,13 +17,14 @@ This repository is of Course : "Self Driving Car using raspbery pi in Python "
 We will make things so simplified with our recorded lectures that you can easily build your own Self Drivind car from scratch.
 
 Here is what you need:
+
 **Software Requirements**
 * Our course for deep undertanding of our code
 * Python 3.6 
 * Opencv 4.2
 * Motivated mind for a huge programming Project:smile:
 
-**Hardware Requirments **
+**Hardware Requirments**
 * Raspberrypi 3 or greater
 * Geared Dc motors 12V (single)
 * 12V lipo Battery
@@ -35,12 +36,17 @@ Udemy - [@udemy_link](https://www.udemy.com/user/e8894488-eb79-45f5-aef1-f3a8733
 ## Using this Repository
 
 Just fork the repository on your Raspebery pi and install are required packages mentioned above.
-Run with "python3 {your_directory}/LaneDetection/Lane_Detection.py "
+
+Run with 
+  ```sh
+  python3 {your_directory}/LaneDetection/Lane_Detection.py 
+  ```
+
 
 ## Instructors
 
 Muhammad Luqman (Hardware Designing)- [@linked_in_profile](https://www.linkedin.com/in/muhammad-luqman-9b227a11b/)  
-Haider Najeeb   (Computer Vision)- [@linked_in_profile](https://www.linkedin.com/in/haider-najeeb-68812516a/)  
+Haider Najeeb   (Computer Vision)-  [@linked_in_profile](https://www.linkedin.com/in/haider-najeeb-68812516a/)  
 
 
 ## License
