@@ -10,11 +10,7 @@ from numpy import interp
 from time import sleep
 import RPi.GPIO as GPIO
 
-def signal_handler(sig, frame):
-    GPIO.cleanup()
-    sys.exit(0)
-#Definging global variables
-count =0
+
 #dc_pwm,servo_pwm,servo_motor=0,0,18
 #Motors Pins
 motor_a = 20 
@@ -87,26 +83,11 @@ def beInLane_(Max_Sane_dist,distance,curvature):
 
     angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,65])
 
-    #setServoAngle(int(angle))
-
-def beInLane(dist_scaler,distance,curvature):
-    error=curvature + dist_scaler*distance
-    print(error)
-    if(error<0):
-        angle=interp(error,[-70,0],[0,35]) # left turn
-    else:
-        angle=interp(error,[0,70],[35,65]) #left right
     setServoAngle(int(angle))
-
-
-    
        
-#turnOfCar()
-        
+#turnOfCar() // to disconnect all channels of pwm
         
 
-
-    
 
     
 
