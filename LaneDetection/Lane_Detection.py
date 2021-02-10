@@ -94,6 +94,9 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 		#LanePoint_top   = ( int( (Mid_highP[0] + high_Col) / 2 ) , int( Mid_highP[1]) )
 		LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
 		LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
+
+		print(" Mid_lower_row = ", Mid_lowP[1])
+		print(" Mid_higher_row = ", Mid_highP[1])
 		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
 
 	Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
@@ -532,7 +535,7 @@ def main():
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
-		waitTime = 2
+		waitTime = 0
 		# Averaging Distance Control Parameters
 		avg_Dist_4 = 0
 		temp_dist = 0
