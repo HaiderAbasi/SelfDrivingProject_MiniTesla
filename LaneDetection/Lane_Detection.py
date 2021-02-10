@@ -1,8 +1,3 @@
-#Commit: Removed ESP from Scene , Only Raspberry pi (for now) ->12:26 3/feb/21
-# added line 6 for motor controlling
-# added line on 373 for sending ditance and curvature to motor control
-#          which will deal with all conditions throguh  funtion "beInLan()" 
-# deleted lines related to udp and serial  274-279 , 10,12,336
 import config
 import cv2
 import numpy as np 
