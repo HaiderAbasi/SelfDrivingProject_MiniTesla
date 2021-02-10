@@ -16,7 +16,7 @@ if (config.debugging==False):
 	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
 #=============================================================
 if (config.debugging):
-	cap = cv2.VideoCapture("Inputs/in2.avi")
+	cap = cv2.VideoCapture("LaneDetection/Inputs/in2.avi")
 	cv2.namedWindow('Vid',cv2.WINDOW_NORMAL)
 	fps = cap.get(cv2.CAP_PROP_FPS)
 	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -512,8 +512,8 @@ def main():
 	CropHeight_resized_crop = int( (CropHeight / Ref_imgHeight ) * Resized_height )
 
 	if(config.write):
-		#in_q = cv2.VideoWriter('Results/in2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
-		out = cv2.VideoWriter('Results/out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
+		#in_q = cv2.VideoWriter('LaneDetection/Results/in2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+		out = cv2.VideoWriter('LaneDetection/Results/out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
 
 	loopCount=0
 
@@ -523,7 +523,7 @@ def main():
 		waitTime = 1
 	else:
 		cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
-		LaneDetection_results = open("Results/LaneDetection_out.txt","w")
+		LaneDetection_results = open("LaneDetection/Results/LaneDetection_out.txt","w")
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
