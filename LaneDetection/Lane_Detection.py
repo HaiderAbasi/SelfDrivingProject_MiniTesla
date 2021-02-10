@@ -58,15 +58,20 @@ def Cord_Sort(cnts,order):
 		
 
 def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
+	#  Fetching the closest outer lane to mid lane is the main goal here
+	
+	#Container for storing/returning closest Outer Lane
+	Outer_Lanes_ret= np.zeros(OuterLanes.shape,OuterLanes.dtype)
+
 	Offset_correction = 0
 	Mid_cnts = cv2.findContours(MidLane, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 	
 	Ref=(0,0)
 	if(Mid_cnts):
 		Ref = tuple(Mid_cnts[0][0][0])
-	#  Fetching the closest outer lane to mid lane
-	Outer_Lanes_ret= np.zeros(OuterLanes.shape,OuterLanes.dtype)
 
+	#Condition 1 : if MidLane is present but no Outlane detected
+	# Create Outlane on Side that represent the larger Lane as seen by camera
 	if(Mid_cnts and (len(OuterLane_Points)==0)):
 		# Condition where MidCnts are detected 
 		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
