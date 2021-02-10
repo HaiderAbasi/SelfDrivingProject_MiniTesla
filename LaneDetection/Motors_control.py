@@ -3,7 +3,8 @@
 # This Code controls Dc motor and servo motor through pwm
 # We defined all gpio pins in BCM mode and create a switch statment to test all
 #DC motor pwm -> 0-100 (direct duty cycle)
-# servo motor angle -> 0-90 ( 30 is straight , 65 is full right , 0 is full left)
+# servo motor angle -> 0-90 ( 35 is straight , 65 is full right , 0 is full left)
+
 import sys
 from numpy import interp
 from time import sleep
@@ -97,39 +98,12 @@ def beInLane(dist_scaler,distance,curvature):
         angle=interp(error,[0,70],[35,65]) #left right
     setServoAngle(int(angle))
 
-# left movement 
-#     if(curvature < 0 and distance <0):
-#         angle=interp(distance,[-70,0],[0,35])
-#         setServoAngle(int(angle))
-#         #print(angle)
-#     elif(curvature > 0 and distance >0): # right movement
-#         angle=interp(distance,[0,70],[50,65])
-#         setServoAngle(int(angle))
-#         #print(angle)
-#     elif(curvature < 0 and distance >0): #left turn ahead
-#         angle=interp(curvature,[-70,0],[0,35])
-#         setServoAngle(int(angle))
-#         #print(angle)
-#     elif(curvature > 0 and distance <0): # right turn ahead
-#         angle=interp(curvature,[0,70],[35,65])
-#         setServoAngle(int(angle))
-#         #print(angle)
+
     
        
 #turnOfCar()
         
         
-        
-# def loop():
-#     while(1):
-#          x=int(input("\nenter distance "))
-#          if(x >100):
-#              turnOfCar()
-#          y=int(input("enter curvature \n\n"))
-#          beInLane(x,y)
-# 
-# if __name__ == '__main__':
-#     loop()
 
 
     
