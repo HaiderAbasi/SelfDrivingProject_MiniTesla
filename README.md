@@ -1,4 +1,4 @@
-# SelfDrivingProject_MiniTesla
+# Self Driving Car with Open Cv
 
 <details open="open">
   <summary>Table of Contents</summary>
