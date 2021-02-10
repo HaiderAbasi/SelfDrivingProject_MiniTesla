@@ -7,13 +7,12 @@
     <li><a href="#Usage">Using this Repository</a></li>
     <li><a href="#Instructors">Instructors</a></li>
     <li><a href="#license">License</a></li>
-    
   </ol>
 </details>
 
 ## About The Project
 
-This repository is of Course : "Self Driving Car using raspbery pi in Python "
+This repository is of Course : **Self Driving Car using raspbery pi in Python**
 We will make things so simplified with our recorded lectures that you can easily build your own Self Drivind car from scratch.
 
 Here is what you need:
