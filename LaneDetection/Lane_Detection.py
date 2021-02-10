@@ -13,7 +13,7 @@ if (config.debugging==False):
 	from imutils.video import FPS
 	import imutils
 	import argparse
-	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane,beInLane_
+	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
 #=============================================================
 if (config.debugging):
 	cap = cv2.VideoCapture("Inputs/in2.avi")
@@ -607,8 +607,7 @@ def main():
 						temp_dist = 0
 					result_txt =  str(detected_frame_count) + " -> [ "+ str(Distance) + " , " + str(Curvature) + " ]  -> [ "+ str(avg_Dist_4) + " ] \n" 
 					LaneDetection_results.write(result_txt)
-					if (config.debugging==False):					
-						#beInLane(1, Distance,Curvature )
+					if (config.debugging==False):		
 						beInLane(int(frame.shape[1]/4), Distance,Curvature )
 						
 					
