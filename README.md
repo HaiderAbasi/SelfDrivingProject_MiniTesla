@@ -3,7 +3,7 @@
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="#About-the-project">About The Project</a><li>
+    <li><a href="#About-the-project">About The Project</a></li>
     <li><a href="#Usage">Using this Repository</a></li>
     <li><a href="#Instructors">Instructors</a></li>
     <li><a href="#license">License</a></li>
