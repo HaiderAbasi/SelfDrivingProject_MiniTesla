@@ -609,8 +609,8 @@ def main():
 					LaneDetection_results.write(result_txt)
 					if (config.debugging==False):					
 						#beInLane(1, Distance,Curvature )
-						beInLane_(int(frame.shape[1]/4), Distance,Curvature )
-						mend = time.time()
+						beInLane(int(frame.shape[1]/4), Distance,Curvature )
+						
 					
 				
 				Out_image,drawn = DrawProbablePath_(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
@@ -622,8 +622,7 @@ def main():
 				Distance , Curvature = DrawProbablePath(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
 				if(Distance != -1000 | Curvature != -1000):
 					if (config.debugging==False):
-						beInLane_(int(frame.shape[1]/4), Distance,Curvature )
-						mend = time.time()
+						beInLane(int(frame.shape[1]/4), Distance,Curvature )
 						# -1000 value in either of Dist or Curvature represents Unknown value (Lane not found)
 						# + Distance represents Car On the right side of image center + x axis 
 						# - Distance represents Car On the left  side of image center - x axis
