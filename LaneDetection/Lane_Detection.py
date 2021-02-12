@@ -8,22 +8,22 @@ from Lane_Extractor import GetLaneROI
 from Morph_op import FindExtremas,BWContourOpen_speed
 import time
 from sys import platform
-#==========Special Imports====================================
+
+if platform == "linux":
+    vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in2.avi"
+    txt_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/LaneDetection_out.txt"   
+else:
+    vid_path = "LaneDetection/Inputs/in2.avi"
+    txt_path = "LaneDetection/Results/LaneDetection_out.txt"
+
+#=====================================Special Imports===========================================================
 if (config.debugging==False):
 	from imutils.video.pivideostream import PiVideoStream
 	from imutils.video import FPS
 	import imutils
 	import argparse
 	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
-#=============================================================
-
-if platform == "linux":
-    vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in2.avi"
-    txt_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/LaneDetection_out.txt"
-    
-else:
-    vid_path = "LaneDetection/Inputs/in2.avi"
-    txt_path = "LaneDetection/Results/LaneDetection_out.txt"
+#==============================================================================================================
 if (config.debugging):
 	cap = cv2.VideoCapture(vid_path)
 	cv2.namedWindow('Vid',cv2.WINDOW_NORMAL)
@@ -82,31 +82,34 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 	#Condition 1 : if MidLane is present but no Outlane detected
 	# Create Outlane on Side that represent the larger Lane as seen by camera
 	if(Mid_cnts and (len(OuterLane_Points)==0)):
-		# Condition where MidCnts are detected 
-		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
-		Mid_Rows = Mid_cnts_Rowsorted.shape[0]
+		if(~np.any(OuterLanes>0)):
+			print("OuterLanes Not empty but points are empty")
+			cv2.imshow("OuterLanes",OuterLanes)
+			# Condition where MidCnts are detected 
+			Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
+			Mid_Rows = Mid_cnts_Rowsorted.shape[0]
 
-		Mid_lowP = Mid_cnts_Rowsorted[Mid_Rows-1,:]
-		Mid_highP = Mid_cnts_Rowsorted[0,:]
-		Mid_median_Col = int( (Mid_lowP[0]  + Mid_highP[0] ) / 2 ) 
-		if(Mid_median_Col >= int(MidLane.shape[1]/2)):
-			low_Col=0
-			high_Col=0
-			Offset_correction = -20
-		else:
-			low_Col=(int(MidLane.shape[1])-1)
-			high_Col=(int(MidLane.shape[1])-1)
-			Offset_correction = 20
+			Mid_lowP = Mid_cnts_Rowsorted[Mid_Rows-1,:]
+			Mid_highP = Mid_cnts_Rowsorted[0,:]
+			Mid_median_Col = int( (Mid_lowP[0]  + Mid_highP[0] ) / 2 ) 
+			if(Mid_median_Col >= int(MidLane.shape[1]/2)):
+				low_Col=0
+				high_Col=0
+				Offset_correction = -20
+			else:
+				low_Col=(int(MidLane.shape[1])-1)
+				high_Col=(int(MidLane.shape[1])-1)
+				Offset_correction = 20
 
-		Mid_lowP[1] = MidLane.shape[0]# setting mid_trajectory_lowestPoint_Row to MaxRows of Image
-		#LanePoint_lower = ( int( (Mid_lowP[0]  + low_Col ) / 2 ) , int( Mid_lowP[1] ) )
-		#LanePoint_top   = ( int( (Mid_highP[0] + high_Col) / 2 ) , int( Mid_highP[1]) )
-		LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
-		LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
+			Mid_lowP[1] = MidLane.shape[0]# setting mid_trajectory_lowestPoint_Row to MaxRows of Image
+			#LanePoint_lower = ( int( (Mid_lowP[0]  + low_Col ) / 2 ) , int( Mid_lowP[1] ) )
+			#LanePoint_top   = ( int( (Mid_highP[0] + high_Col) / 2 ) , int( Mid_highP[1]) )
+			LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
+			LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
 
-		print(" Mid_lower_row = ", Mid_lowP[1])
-		print(" Mid_higher_row = ", Mid_highP[1])
-		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
+			print(" Mid_lower_row = ", Mid_lowP[1])
+			print(" Mid_higher_row = ", Mid_highP[1])
+			OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
 
 	Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
@@ -128,6 +131,142 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 2)
 		Outer_cnts_ret = [Outer_cnts[Closest_Index]]
 		return Outer_Lanes_ret ,Outer_cnts_ret, Mid_cnts,0
+	else:
+		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+
+def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
+
+	is_Ref_to_path_Left = 0
+	Ref_To_Path_Image = np.zeros_like(Midlane)
+
+	Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
+	Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
+	#print(Mid_cnts_Rowsorted)
+	Mid_Rows = Mid_cnts_Rowsorted.shape[0]
+	Outer_Rows = Outer_cnts_Rowsorted.shape[0]
+
+	Mid_lowP = Mid_cnts_Rowsorted[Mid_Rows-1,:]
+	Outer_lowP = Outer_cnts_Rowsorted[Outer_Rows-1,:]
+
+	Traj_lowP = ( int( (Mid_lowP[0] + Outer_lowP[0]  ) / 2 ) , int( (Mid_lowP[1]  + Outer_lowP[1] ) / 2 ) )
+	
+	cv2.line(Ref_To_Path_Image,Traj_lowP,(int(Ref_To_Path_Image.shape[1]/2),Traj_lowP[1]),(255,255,0),2)# distance of car center with lane path
+
+	is_Ref_to_path_Left = ( (int(Ref_To_Path_Image.shape[1]/2) - Traj_lowP[0]) > 0 )
+	cv2.imshow("Midlane",Midlane)
+	cv2.imshow("Distance_Image",Ref_To_Path_Image)
+	if( np.any( (cv2.bitwise_and(Ref_To_Path_Image,Midlane) ) > 0 ) ):
+		# Midlane and CarPath Intersets (MidCrossing)
+		return True,is_Ref_to_path_Left
+	else:
+		return False,is_Ref_to_path_Left
+
+
+def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
+	#  Fetching the closest outer lane to mid lane is the main goal here
+	
+	#Container for storing/returning closest Outer Lane
+	Outer_Lanes_ret= np.zeros(OuterLanes.shape,OuterLanes.dtype)
+
+	Offset_correction = 0
+	Mid_cnts = cv2.findContours(MidLane, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+	
+	Ref=(0,0)
+	if(Mid_cnts):
+		Ref = tuple(Mid_cnts[0][0][0])
+
+	Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+
+	if not Outer_cnts:
+		NoOuterLane_before=True
+	else:
+		NoOuterLane_before=False
+	#Condition 1 : if Both Midlane and Outlane is detected
+	# Sepearate closest outlane to the midlane
+
+	print("len(OuterLane_Points) ",len(OuterLane_Points))
+	if(len(OuterLane_Points)==2):
+		Point_a=OuterLane_Points[0]
+		Point_b=OuterLane_Points[1]
+
+		Closest_Index=0
+		if(Distance_(Point_a,Ref)<=Distance_(Point_b,Ref)):
+			Closest_Index=0
+		elif(len(Outer_cnts)>1):
+			Closest_Index=1
+		#cv2.namedWindow("OuterLanes",cv2.WINDOW_NORMAL)
+		#cv2.imshow("OuterLanes",OuterLanes)
+		#cv2.waitKey(0)		
+		#print("OuterLane_Points ",OuterLane_Points)
+		#print("len(Outer_cnts) ",len(Outer_cnts))
+		#print("Closest_Index ",Closest_Index)
+		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 2)
+		Outer_cnts_ret = [Outer_cnts[Closest_Index]]
+		# ================================ Adding the nEW stuff =====================================
+		# The idea is to find lane points here and determine if trajectory is crossing midlane
+		#If (Yes):
+		# Discard
+		#Else 
+		# Continue
+		IsPathCrossing , IsCrossingLeft = IsPathCrossingMid(MidLane,Mid_cnts,Outer_cnts_ret)
+		if(IsPathCrossing):
+			print("Zeroing OuterLanes because LAnes are crossing")
+			OuterLanes = np.zeros_like(OuterLanes)#Empty outerLane
+		else:
+			#If no fllor crossing return results
+			return Outer_Lanes_ret ,Outer_cnts_ret, Mid_cnts,0
+	#Condition 2 : if MidLane is present but no Outlane detected
+	# Create Outlane on Side that represent the larger Lane as seen by camera
+	#if( ( Mid_cnts and (len(OuterLane_Points)==0)) or ( Mid_cnts and (np.any(OuterLanes>0)) ) ):
+	if( Mid_cnts and ( not np.any(OuterLanes>0) ) ):
+		print("OuterLanes Not empty but points are empty")
+		cv2.imshow("OuterLanes",OuterLanes)
+		# Condition where MidCnts are detected 
+		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
+		Mid_Rows = Mid_cnts_Rowsorted.shape[0]
+
+		Mid_lowP = Mid_cnts_Rowsorted[Mid_Rows-1,:]
+		Mid_highP = Mid_cnts_Rowsorted[0,:]
+
+		#Mid_median_Col = int( (Mid_lowP[0]  + Mid_highP[0] ) / 2 ) 
+		Mid_low_Col = Mid_lowP[0]
+		
+		DrawRight = False
+		
+		if NoOuterLane_before:
+			print("Mid_lowP[0] ",Mid_lowP[0],"Mid_highP[0] ",Mid_highP[0])
+			print("No OuterLanes were detected at all so can only rely on Midlane Info!!")
+			#if(Mid_median_Col < int(MidLane.shape[1]/2)):
+			if(Mid_low_Col < int(MidLane.shape[1]/2)):
+				# MidLane on left side of Col/2 of image --> Bigger side is right side draw there
+				DrawRight = True
+		else:
+			print("IsPathCrossing = ",IsPathCrossing," IsCrossingLeft = ",IsCrossingLeft)
+			if IsCrossingLeft:
+				# trajectory from reflane to lane path is crossing midlane while moving left --> Draw Right
+				DrawRight = True
+
+		print("DrawRight = ",DrawRight)
+		if not DrawRight:
+			low_Col=0
+			high_Col=0
+			Offset_correction = -20
+		else:
+			low_Col=(int(MidLane.shape[1])-1)
+			high_Col=(int(MidLane.shape[1])-1)
+			Offset_correction = 20
+
+		Mid_lowP[1] = MidLane.shape[0]# setting mid_trajectory_lowestPoint_Row to MaxRows of Image
+		#LanePoint_lower = ( int( (Mid_lowP[0]  + low_Col ) / 2 ) , int( Mid_lowP[1] ) )
+		#LanePoint_top   = ( int( (Mid_highP[0] + high_Col) / 2 ) , int( Mid_highP[1]) )
+		LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
+		LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
+
+		print(" Mid_lower_row = ", Mid_lowP[1])
+		print(" Mid_higher_row = ", Mid_highP[1])
+		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
+		Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 	else:
 		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 
@@ -544,7 +683,7 @@ def main():
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
-		waitTime = 0
+		waitTime = 0 
 		# Averaging Distance Control Parameters
 		avg_Dist_4 = 0
 		temp_dist = 0
@@ -597,7 +736,7 @@ def main():
 			
 
 			# Once we have the mid and outer lanes Only keep the closest outer lane to mid lane
-			OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
+			OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane_(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
 
 			# Algo to Remove/Deselect YellowLine that doesnt support the general trend
 			#OuterLane_OneSide,Outer_cnts_oneSide,YelloLane_CurrIntrv,YelloLane_SumDistFromMid,YelloLane_AvgDistFromMid,YelloLane_CurrDistFromMid = KeepOutLane(OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,YelloLane_maxIntrv,YelloLane_CurrIntrv,YelloLane_SumDistFromMid,YelloLane_AvgDistFromMid,YelloLane_CurrDistFromMid)
