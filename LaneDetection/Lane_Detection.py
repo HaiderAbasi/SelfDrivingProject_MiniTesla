@@ -757,15 +757,16 @@ def main():
 				Distance , Curvature = DrawProbablePath(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
 				
 				if(Distance != -1000 | Curvature != -1000):
-					detected_frame_count = detected_frame_count + 1
-					temp_dist = temp_dist + Distance
-					if ( (detected_frame_count % num_Dist) == 0 ):
-						avg_Dist_4 = int(temp_dist / num_Dist)
-						temp_dist = 0
-					result_txt =  str(detected_frame_count) + " -> [ "+ str(Distance) + " , " + str(Curvature) + " ]  -> [ "+ str(avg_Dist_4) + " ] \n" 
-					LaneDetection_results.write(result_txt)
 					if (config.debugging==False):		
 						beInLane(int(frame.shape[1]/4), Distance,Curvature )
+					else:
+						detected_frame_count = detected_frame_count + 1
+						temp_dist = temp_dist + Distance
+						if ( (detected_frame_count % num_Dist) == 0 ):
+							avg_Dist_4 = int(temp_dist / num_Dist)
+							temp_dist = 0
+						result_txt =  str(detected_frame_count) + " -> [ "+ str(Distance) + " , " + str(Curvature) + " ]  -> [ "+ str(avg_Dist_4) + " ] \n" 
+						LaneDetection_results.write(result_txt)						
 						
 					
 				
