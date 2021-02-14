@@ -646,7 +646,9 @@ def main():
 	#cv2.namedWindow("Mid_trajectory",cv2.WINDOW_NORMAL)
 	#cv2.namedWindow("Mid_trajectory_largest",cv2.WINDOW_NORMAL)
 	#cv2.namedWindow("OuterLane_trajectory",cv2.WINDOW_NORMAL)
+	forward()
 	#cv2.namedWindow("Out_image",cv2.WINDOW_NORMAL)
+    
 
 	
 	Ref_imgWidth = 1920
@@ -700,6 +702,7 @@ def main():
 		YelloLane_SumDistFromMid = 0
 		YelloLane_AvgDistFromMid = 0
 		YelloLane_CurrDistFromMid = 0
+		
 	while (1):
         
 		start = time.time()
@@ -710,7 +713,7 @@ def main():
 			frame = vs.read().copy()
 		
 		frame_cropped = frame[CropHeight_resized_crop:,:]
-
+        
 		#if(config.write):
 			#in_q.write(frame)
 

@@ -29,6 +29,7 @@ dc_pwm.start(0)
 servo_pwm=GPIO.PWM(servo_motor, 50)
 servo_pwm.start(0)
 
+dc_pwm.ChangeDutyCycle(30)
 ## function names are self representing 
 def setServoAngle(angle):
     duty = angle / 18 + 2
@@ -40,6 +41,7 @@ def setServoAngle(angle):
 def forward():
     GPIO.output(motor_a,GPIO.HIGH)
     GPIO.output(motor_b,GPIO.LOW)
+    print("forward main hun")
 def backward():
     GPIO.output(motor_a,GPIO.LOW)
     GPIO.output(motor_b,GPIO.HIGH)
@@ -86,3 +88,5 @@ def beInLane(Max_Sane_dist,distance,curvature):
     setServoAngle(int(angle))
        
 #turnOfCar() // to disconnect all channels of pwm
+
+    
