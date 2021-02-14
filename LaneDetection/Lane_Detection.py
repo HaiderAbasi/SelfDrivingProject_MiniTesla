@@ -23,6 +23,7 @@ if (config.debugging==False):
 	import imutils
 	import argparse
 	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
+
 #==============================================================================================================
 if (config.debugging):
 	cap = cv2.VideoCapture(vid_path)
@@ -683,7 +684,7 @@ def main():
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
-		waitTime = 0 
+		waitTime = 1 
 		# Averaging Distance Control Parameters
 		avg_Dist_4 = 0
 		temp_dist = 0
