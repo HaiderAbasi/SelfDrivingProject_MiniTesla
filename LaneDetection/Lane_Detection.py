@@ -37,9 +37,7 @@ if (config.debugging):
 	print(frame_count)
 	print(duration)
 	Video_pos = 35#sec
-	#cap = cv2.VideoCapture("/home/pi/Desktop/pivideo.mp4")
-else:
-	cap = cv2.VideoCapture(0)
+
 
 
 def OnVidPosChange(val):
@@ -645,10 +643,12 @@ def KeepOutLane(OuterLane,Outer_cnts,Mid_cnts,MaxIntrv,CurrIntrv,SumDistFromMid,
 		
 
 def main():
+
+	if (config.debugging==False):
+		forward()
 	#cv2.namedWindow("Mid_trajectory",cv2.WINDOW_NORMAL)
 	#cv2.namedWindow("Mid_trajectory_largest",cv2.WINDOW_NORMAL)
 	#cv2.namedWindow("OuterLane_trajectory",cv2.WINDOW_NORMAL)
-	forward()
 	#cv2.namedWindow("Out_image",cv2.WINDOW_NORMAL)
     
 
@@ -673,8 +673,10 @@ def main():
 	CropHeight_resized_crop = int( (CropHeight / Ref_imgHeight ) * Resized_height )
 
 	if(config.write):
-		#in_q = cv2.VideoWriter('LaneDetection/Results/in2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
-		out = cv2.VideoWriter('LaneDetection/Results/out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
+		if(config.In_write):
+			in_q = cv2.VideoWriter('LaneDetection/Results/in_16_2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+		if(config.Out_write):
+			out = cv2.VideoWriter('LaneDetection/Results/out_16_2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
 
 	loopCount=0
 
@@ -716,10 +718,11 @@ def main():
 		
 		frame_cropped = frame[CropHeight_resized_crop:,:]
         
-		#if(config.write):
-			#in_q.write(frame)
+		if(config.write):
+			if(config.In_write):
+				in_q.write(frame)
 
-		if 1:
+		if config.detect:
 			if (config.debugging):
 				cv2.imshow('Vid',frame)
 			start_getlanes = time.time()
@@ -793,25 +796,22 @@ def main():
 						# + Curvature represents orientation of car w.r.t image central axis (Red Vertical line) 
 						# - Curvature represents orientation of car w.r.t image central axis
 			if(config.write):
-				out.write(frame)#8ms
+				if(config.Out_write):
+					out.write(frame)#8ms
 			if config.Profiling:
 				loopCount=loopCount+1
 				if(loopCount==50):
 					break
 		else:
-			if(config.write):
-				cv2.imshow("data",frame)
-				cv2.waitKey(1)
-			else:
-				break
+			cv2.imshow("data",frame)
+			cv2.waitKey(10)
 		end = time.time()
 		print("Complete Loop took ",end - start," sec <-->  ",(1/(end - start)),"  FPS ")
-	end = time.time()
-	print("Complete Loop took ",end - start," sec <-->  ",(1/(end - start)),"  FPS ")	
 	# When everything done, release the video capture and video write objects
 	LaneDetection_results.close()
 	cap.release()
 	out.release()
+	in_q.release()
 	# Closes all the frames
 	cv2.destroyAllWindows()
 	if (config.debugging==False):
