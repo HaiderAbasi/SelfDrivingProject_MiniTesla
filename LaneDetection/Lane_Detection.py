@@ -54,18 +54,19 @@ def SegmentLanesAndDisplay_2(copy):
 
 
 def Cord_Sort(cnts,order):
-
-	cnt=cnts[0]
-	cnt=np.reshape(cnt,(cnt.shape[0],cnt.shape[2]))
-	order_list=[]
-	if(order=="rows"):
-		order_list.append((0,1))
-	else:
-		order_list.append((1,0))
-	ind = np.lexsort((cnt[:,order_list[0][0]],cnt[:,order_list[0][1]]))
-	Sorted=cnt[ind]
-	return Sorted
-		
+    if cnts:
+        cnt=cnts[0]
+        cnt=np.reshape(cnt,(cnt.shape[0],cnt.shape[2]))
+        order_list=[]
+        if(order=="rows"):
+            order_list.append((0,1))
+        else:
+            order_list.append((1,0))
+        ind = np.lexsort((cnt[:,order_list[0][0]],cnt[:,order_list[0][1]]))
+        Sorted=cnt[ind]
+        return Sorted
+    else:
+        return cnts
 
 def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 	#  Fetching the closest outer lane to mid lane is the main goal here
@@ -154,8 +155,8 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 	cv2.line(Ref_To_Path_Image,Traj_lowP,(int(Ref_To_Path_Image.shape[1]/2),Traj_lowP[1]),(255,255,0),2)# distance of car center with lane path
 
 	is_Ref_to_path_Left = ( (int(Ref_To_Path_Image.shape[1]/2) - Traj_lowP[0]) > 0 )
-	cv2.imshow("Midlane",Midlane)
-	cv2.imshow("Distance_Image",Ref_To_Path_Image)
+	#cv2.imshow("Midlane",Midlane)
+	#cv2.imshow("Distance_Image",Ref_To_Path_Image)
 	if( np.any( (cv2.bitwise_and(Ref_To_Path_Image,Midlane) ) > 0 ) ):
 		# Midlane and CarPath Intersets (MidCrossing)
 		return True,is_Ref_to_path_Left
@@ -221,7 +222,7 @@ def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 	#if( ( Mid_cnts and (len(OuterLane_Points)==0)) or ( Mid_cnts and (np.any(OuterLanes>0)) ) ):
 	if( Mid_cnts and ( not np.any(OuterLanes>0) ) ):
 		print("OuterLanes Not empty but points are empty")
-		cv2.imshow("OuterLanes",OuterLanes)
+		#cv2.imshow("OuterLanes",OuterLanes)
 		# Condition where MidCnts are detected 
 		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
 		Mid_Rows = Mid_cnts_Rowsorted.shape[0]
@@ -572,6 +573,7 @@ def DrawProbablePath_(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,O
 		#print(texttoPut)
 		cv2.putText(Out_image,texttoPut,(Out_image.shape[1]-400,50),cv2.FONT_HERSHEY_DUPLEX,1,(0,255,255),2)
 		cv2.putText(Out_image,texttoPut2,(Out_image.shape[1]-400,80),cv2.FONT_HERSHEY_DUPLEX,1,(0,255,255),2)
+		
 		#Out_image = cv2.resize(Out_image,(1280,720))
 		drawn=True		
 		return Out_image,drawn
@@ -666,7 +668,7 @@ def main():
 	BWContourOpen_speed_MaxDist_per = 500 / Ref_imgHeight
 	MaxDist_resized = int(Resized_height * BWContourOpen_speed_MaxDist_per)
 	
-	CropHeight = 700
+	CropHeight = 600
 	#CropHeight_resized_crop = int( (CropHeight / cap.get(cv2.CAP_PROP_FRAME_HEIGHT) ) * Resized_height )
 	CropHeight_resized_crop = int( (CropHeight / Ref_imgHeight ) * Resized_height )
 
@@ -761,7 +763,9 @@ def main():
 				
 				if(Distance != -1000 | Curvature != -1000):
 					if (config.debugging==False):		
-						beInLane(int(frame.shape[1]/4), Distance,Curvature )
+						angle_of_car=beInLane(int(frame.shape[1]/4), Distance,Curvature )
+						cv2.putText(frame,str(angle_of_car),(frame.shape[1]-400,50),cv2.FONT_HERSHEY_DUPLEX,1,(0,255,255),2)
+		
 					else:
 						detected_frame_count = detected_frame_count + 1
 						temp_dist = temp_dist + Distance

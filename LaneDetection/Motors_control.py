@@ -28,8 +28,8 @@ dc_pwm=GPIO.PWM(enable_motor,1000)
 dc_pwm.start(0)
 servo_pwm=GPIO.PWM(servo_motor, 50)
 servo_pwm.start(0)
-
-dc_pwm.ChangeDutyCycle(30)
+car_speed=0
+dc_pwm.ChangeDutyCycle(car_speed)
 ## function names are self representing 
 def setServoAngle(angle):
     duty = angle / 18 + 2
@@ -77,16 +77,19 @@ def beInLane(Max_Sane_dist,distance,curvature):
         CarTurn_angle = Turn_angle_interpolated + curvature
 
     # Handle Max Limit [if (greater then either limits) --> set to max limit]
-    if( (CarTurn_angle > Max_turn_angle) or (CarTurn_angle < (-1 *Max_turn_angle) ) ):
-        if(CarTurn_angle > Max_turn_angle):
+    if( (CarTurn_angle > (Max_turn_angle-50)) or (CarTurn_angle < ( (-1 *Max_turn_angle)+50 ) ) ):
+        if(CarTurn_angle > (Max_turn_angle-50)):
             CarTurn_angle = Max_turn_angle
         else:
             CarTurn_angle = -Max_turn_angle
 
     angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,65])
-
+    if(angle>55):
+        dc_pwm.ChangeDutyCycle(car_speed)
+    else:
+        dc_pwm.ChangeDutyCycle(car_speed)
     setServoAngle(int(angle))
-       
+    return angle   
 #turnOfCar() // to disconnect all channels of pwm
 
     
