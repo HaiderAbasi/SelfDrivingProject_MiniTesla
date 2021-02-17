@@ -732,7 +732,7 @@ def main():
 	BWContourOpen_speed_MaxDist_per = 600 / Ref_imgHeight
 	MaxDist_resized = int(Resized_height * BWContourOpen_speed_MaxDist_per)
 	
-	CropHeight = 700
+	CropHeight = 600
 	#CropHeight_resized_crop = int( (CropHeight / cap.get(cv2.CAP_PROP_FRAME_HEIGHT) ) * Resized_height )
 	CropHeight_resized_crop = int( (CropHeight / Ref_imgHeight ) * Resized_height )
 
