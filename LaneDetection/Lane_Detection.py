@@ -12,7 +12,9 @@ from sys import platform
 if platform == "linux":
     vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in_16_2.avi"
     txt_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/LaneDetection_out.txt"   
+    in_video_path="/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/in_16_2.avi"
 else:
+    in_video_path="LaneDetection/Results/in_16_2.avi"
     vid_path = "LaneDetection/Inputs/in_16_2.avi"
     txt_path = "LaneDetection/Results/LaneDetection_out.txt"
 
@@ -194,7 +196,7 @@ def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 	# Sepearate closest outlane to the midlane
 
 	print("len(OuterLane_Points) ",len(OuterLane_Points))
-	if(len(OuterLane_Points)==2):
+	if( (len(OuterLane_Points)==2) and Mid_cnts):
 		Point_a=OuterLane_Points[0]
 		Point_b=OuterLane_Points[1]
 
@@ -736,7 +738,7 @@ def main():
 
 	if(config.write):
 		if(config.In_write):
-			in_q = cv2.VideoWriter('LaneDetection/Results/in_16_2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+			in_q = cv2.VideoWriter(in_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 		if(config.Out_write):
 			out = cv2.VideoWriter('LaneDetection/Results/out_16_2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
 

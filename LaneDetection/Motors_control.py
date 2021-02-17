@@ -28,7 +28,7 @@ dc_pwm=GPIO.PWM(enable_motor,1000)
 dc_pwm.start(0)
 servo_pwm=GPIO.PWM(servo_motor, 50)
 servo_pwm.start(0)
-car_speed=0
+car_speed=50
 dc_pwm.ChangeDutyCycle(car_speed)
 ## function names are self representing 
 def setServoAngle(angle):
@@ -85,7 +85,7 @@ def beInLane(Max_Sane_dist,distance,curvature):
 
     angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,65])
     if(angle>55):
-        dc_pwm.ChangeDutyCycle(car_speed)
+        dc_pwm.ChangeDutyCycle(70)
     else:
         dc_pwm.ChangeDutyCycle(car_speed)
     setServoAngle(int(angle))
