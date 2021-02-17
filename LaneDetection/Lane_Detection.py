@@ -10,10 +10,10 @@ import time
 from sys import platform
 
 if platform == "linux":
-    vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in2.avi"
+    vid_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Inputs/in_16_2.avi"
     txt_path = "/home/pi/Desktop/SelfDrivingProject_MiniTesla/LaneDetection/Results/LaneDetection_out.txt"   
 else:
-    vid_path = "LaneDetection/Inputs/in2.avi"
+    vid_path = "LaneDetection/Inputs/in_16_2.avi"
     txt_path = "LaneDetection/Results/LaneDetection_out.txt"
 
 #=====================================Special Imports===========================================================
@@ -138,10 +138,13 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 
 	is_Ref_to_path_Left = 0
 	Ref_To_Path_Image = np.zeros_like(Midlane)
+	Midlane_copy = Midlane.copy()
 
 	Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
 	Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
 	#print(Mid_cnts_Rowsorted)
+	if not Mid_cnts:
+		print(" Hello there is an error")
 	Mid_Rows = Mid_cnts_Rowsorted.shape[0]
 	Outer_Rows = Outer_cnts_Rowsorted.shape[0]
 
@@ -150,12 +153,17 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 
 	Traj_lowP = ( int( (Mid_lowP[0] + Outer_lowP[0]  ) / 2 ) , int( (Mid_lowP[1]  + Outer_lowP[1] ) / 2 ) )
 	
-	cv2.line(Ref_To_Path_Image,Traj_lowP,(int(Ref_To_Path_Image.shape[1]/2),Traj_lowP[1]),(255,255,0),2)# distance of car center with lane path
+	#cv2.line(Ref_To_Path_Image,Traj_lowP,(int(Ref_To_Path_Image.shape[1]/2),Traj_lowP[1]),(255,255,0),2)# distance of car center with lane path
+	#cv2.line(Ref_To_Path_Image,(Traj_lowP[0],Ref_To_Path_Image.shape[0]),(int(Ref_To_Path_Image.shape[1]/2),Ref_To_Path_Image.shape[0]),(255,255,0),2)# distance of car center with lane path
+	cv2.line(Ref_To_Path_Image,Traj_lowP,(int(Ref_To_Path_Image.shape[1]/2),Ref_To_Path_Image.shape[0]),(255,255,0),2)# distance of car center with lane path
+	cv2.line(Midlane_copy,tuple(Mid_lowP),(Mid_lowP[0],Midlane_copy.shape[0]-1),(255,255,0),2)# distance of car center with lane path
 
 	is_Ref_to_path_Left = ( (int(Ref_To_Path_Image.shape[1]/2) - Traj_lowP[0]) > 0 )
-	#cv2.imshow("Midlane",Midlane)
-	#cv2.imshow("Distance_Image",Ref_To_Path_Image)
-	if( np.any( (cv2.bitwise_and(Ref_To_Path_Image,Midlane) ) > 0 ) ):
+	Distance_And_Midlane = cv2.bitwise_and(Ref_To_Path_Image,Midlane_copy)
+	cv2.imshow("Midlane_copy",Midlane_copy)
+	cv2.imshow("Distance_Image",Ref_To_Path_Image)
+	cv2.imshow("Distance_And_Midlane",Distance_And_Midlane)
+	if( np.any( (cv2.bitwise_and(Ref_To_Path_Image,Midlane_copy) > 0) ) ):
 		# Midlane and CarPath Intersets (MidCrossing)
 		return True,is_Ref_to_path_Left
 	else:
@@ -164,7 +172,8 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 
 def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 	#  Fetching the closest outer lane to mid lane is the main goal here
-	
+	if (config.debugging):
+		cv2.imshow("OuterLanes",OuterLanes)
 	#Container for storing/returning closest Outer Lane
 	Outer_Lanes_ret= np.zeros(OuterLanes.shape,OuterLanes.dtype)
 
@@ -197,9 +206,9 @@ def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 		#cv2.namedWindow("OuterLanes",cv2.WINDOW_NORMAL)
 		#cv2.imshow("OuterLanes",OuterLanes)
 		#cv2.waitKey(0)		
-		#print("OuterLane_Points ",OuterLane_Points)
-		#print("len(Outer_cnts) ",len(Outer_cnts))
-		#print("Closest_Index ",Closest_Index)
+		print("OuterLane_Points ",OuterLane_Points)
+		print("len(Outer_cnts) ",len(Outer_cnts))
+		print("Closest_Index ",Closest_Index)
 		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 2)
 		Outer_cnts_ret = [Outer_cnts[Closest_Index]]
 		# ================================ Adding the nEW stuff =====================================
@@ -262,8 +271,8 @@ def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 		LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
 		LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
 
-		print(" Mid_lower_row = ", Mid_lowP[1])
-		print(" Mid_higher_row = ", Mid_highP[1])
+		#print(" Mid_lower_row = ", Mid_lowP[1])
+		#print(" Mid_higher_row = ", Mid_highP[1])
 		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
 		Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
@@ -420,13 +429,66 @@ def ExtendBothLane(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
 
 	return Lane , OuterLane
 
+def ExtendBothLane2(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
+
+	Image_bottom = Lane.shape[0]
+	
+	Lane_Rows = Lane_RowSorted.shape[0]
+	Lane_Cols = Lane_RowSorted.shape[1]
+	BottomPoint = Lane_RowSorted[Lane_Rows-1,:]	
+
+	if (BottomPoint[1] < Image_bottom):
+		Lane = cv2.line(Lane,tuple(BottomPoint),(BottomPoint[0],Image_bottom),255)
+
+
+	RefLane_Rows = RefLane_RowSorted.shape[0]
+	RefLane_Cols = RefLane_RowSorted.shape[1]
+	RefBottomPoint = RefLane_RowSorted[RefLane_Rows-1,:]
+
+	if (RefBottomPoint[1] < Image_bottom):
+		if(RefLane_Rows>20):
+			shift=20
+		else:
+			shift=2
+		RefLast10Points = RefLane_RowSorted[RefLane_Rows-shift:RefLane_Rows-1:2,:]
+		#print("Last10Points = ",Last10Points)
+		if(len(RefLast10Points)>1):# Atleast 2 points needed to estimate a line
+			#time.sleep(10)
+			Ref_x = RefLast10Points[:,0]#cols
+			Ref_y = RefLast10Points[:,1]#rows
+			Ref_parameters = np.polyfit(Ref_x, Ref_y, 1)
+			Ref_slope = Ref_parameters[0]
+			Ref_yiCntercept = Ref_parameters[1]
+			#print("slope",slope)
+			#Decreasing slope means Current lane is left lane and by going towards 0 x we touchdown
+			if(Ref_slope < 0):
+				Ref_LineTouchPoint_col = 0
+				Ref_LineTouchPoint_row = Ref_yiCntercept
+			else:
+				Ref_LineTouchPoint_col = OuterLane.shape[1]-1 # Cols have lenth of ColLength But traversal is from 0 to ColLength-1
+				Ref_LineTouchPoint_row = Ref_slope * Ref_LineTouchPoint_col + Ref_yiCntercept
+			
+			Ref_TouchPoint = (Ref_LineTouchPoint_col,int(Ref_LineTouchPoint_row))#(col ,row)
+			Ref_BottomPoint_tup = tuple(RefBottomPoint)
+			OuterLane = cv2.line(OuterLane,Ref_TouchPoint,Ref_BottomPoint_tup,255)
+
+			if(Ref_LineTouchPoint_row < Image_bottom):
+				Ref_TouchPoint_Ref = (Ref_LineTouchPoint_col,Image_bottom)
+				OuterLane = cv2.line(OuterLane,Ref_TouchPoint,Ref_TouchPoint_Ref,255)
+		#print("Drawing line form ",BottomPoint_tup," to ",TouchPoint )
+		#print("Drawing line form ",TouchPoint," to ", TouchPoint_Ref)
+		#time.sleep(10)
+
+	return Lane , OuterLane
+
 def ExtendShortLane_(MidLane,Mid_cnts,Outer_cnts,OuterLane):
 
 	if(Mid_cnts and Outer_cnts):
 		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
 		Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
 
-		MidLane,OuterLane = ExtendBothLane(MidLane,OuterLane,Mid_cnts_Rowsorted,Outer_cnts_Rowsorted)
+		#MidLane,OuterLane = ExtendBothLane(MidLane,OuterLane,Mid_cnts_Rowsorted,Outer_cnts_Rowsorted)
+		MidLane,OuterLane = ExtendBothLane2(MidLane,OuterLane,Mid_cnts_Rowsorted,Outer_cnts_Rowsorted)
 
 	return MidLane,OuterLane
 
@@ -665,10 +727,10 @@ def main():
 	minArea_resized = int(Resize_Framepixels * Lane_Extraction_minArea_per)
 
 	#BWContourOpen_speed_MaxDist_per = 500 / cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-	BWContourOpen_speed_MaxDist_per = 500 / Ref_imgHeight
+	BWContourOpen_speed_MaxDist_per = 600 / Ref_imgHeight
 	MaxDist_resized = int(Resized_height * BWContourOpen_speed_MaxDist_per)
 	
-	CropHeight = 600
+	CropHeight = 700
 	#CropHeight_resized_crop = int( (CropHeight / cap.get(cv2.CAP_PROP_FRAME_HEIGHT) ) * Resized_height )
 	CropHeight_resized_crop = int( (CropHeight / Ref_imgHeight ) * Resized_height )
 
@@ -690,7 +752,7 @@ def main():
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
-		waitTime = 1 
+		waitTime = 0 
 		# Averaging Distance Control Parameters
 		avg_Dist_4 = 0
 		temp_dist = 0
@@ -731,17 +793,22 @@ def main():
 			end_getlanes = time.time()
 			print("--> GetLane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes)),"  FPS ")
 
+			if(config.debugging):
+				cv2.imshow('Mid_edge_ROI',Mid_edge_ROI)	
 			# Using polyfit to estimate the trajectory of outer lane
-			Mid_trajectory = SegmentLanesAndDisplay_2(Mid_edge_ROI)#13ms
-
+			# Mid_trajectory = SegmentLanesAndDisplay_2(Mid_edge_ROI)#13ms
+			Mid_trajectory = Mid_edge_ROI.copy()
+			if(config.debugging):
+				cv2.imshow('Mid_trajectory before',Mid_trajectory)	
 			# Keeping only the Estimated trajectory upto the ROI we decided
 			Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_ROI_mask)# 0.1ms
-			
+			if(config.debugging):
+				cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)			
 			# Remove small contours and keep only largest
 			Mid_trajectory_largest = BWContourOpen_speed(Mid_trajectory,MaxDist_resized)#13msec
-
-			#cv2.imshow('Mid_trajectory',Mid_trajectory)
-			#cv2.imshow('Mid_trajectory_largest',Mid_trajectory_largest)
+			if(config.debugging):
+				cv2.imshow('Mid_trajectory',Mid_trajectory)
+				cv2.imshow('Mid_trajectory_largest',Mid_trajectory_largest)
 			
 
 			# Once we have the mid and outer lanes Only keep the closest outer lane to mid lane
@@ -804,14 +871,17 @@ def main():
 					break
 		else:
 			cv2.imshow("data",frame)
-			cv2.waitKey(10)
+			cv2.waitKey(100)
 		end = time.time()
 		print("Complete Loop took ",end - start," sec <-->  ",(1/(end - start)),"  FPS ")
 	# When everything done, release the video capture and video write objects
 	LaneDetection_results.close()
 	cap.release()
-	out.release()
-	in_q.release()
+	if(config.write):
+		if(config.In_write):
+			in_q.release()
+		if(config.Out_write):
+			out.release()
 	# Closes all the frames
 	cv2.destroyAllWindows()
 	if (config.debugging==False):

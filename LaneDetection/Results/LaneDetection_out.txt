@@ -1,1 +1,0 @@
-Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]

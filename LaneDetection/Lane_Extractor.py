@@ -12,7 +12,8 @@ Sat_Low = 0
 #Hue_Low_Y = 31
 #Hue_High_Y = 51
 Hue_Low_Y = 30
-Hue_High_Y = 45
+Hue_High_Y = 38
+#Hue_High_Y = 45
 Lit_Low_Y = 0
 Sat_Low_Y = 51
 
