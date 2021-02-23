@@ -15,3 +15,5 @@ LaneDetection/__pycache__/Morph_op.cpython-36.pyc
 LaneDetection/__pycache__/utilities_3c_threaded.cpython-36.pyc
 LaneDetection/__pycache__/utilities.cpython-36.pyc
 .vscode/settings.json
+LaneDetection/Results/out_320_240.avi
+LaneDetection/Results/out_640_480.avi

@@ -721,8 +721,8 @@ def main():
 	Ref_imgHeight = 1080
 	Frame_pixels = Ref_imgWidth * Ref_imgHeight
 
-	Resized_width = 640 # Control Parameter
-	Resized_height = 480
+	Resized_width = 640#320 # Control Parameter
+	Resized_height = 480#240
 	Resize_Framepixels = Resized_width * Resized_height
 
 	Lane_Extraction_minArea_per = 1500 / Frame_pixels
@@ -740,7 +740,9 @@ def main():
 		if(config.In_write):
 			in_q = cv2.VideoWriter(in_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 		if(config.Out_write):
-			out = cv2.VideoWriter('LaneDetection/Results/out_16_2.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
+			out = cv2.VideoWriter('LaneDetection/Results/out_new.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
+			#out = cv2.VideoWriter('LaneDetection/Results/out_640_480.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))	
+			#out = cv2.VideoWriter('LaneDetection/Results/out_320_240.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (640,480))	
 
 	loopCount=0
 
@@ -754,7 +756,7 @@ def main():
 		result_txt =  "Detected_Frame -> [ Distance , Curvature ] [avg_Dist_4]\n" 
 		LaneDetection_results.write(result_txt)		
 		detected_frame_count = 0
-		waitTime = 0 
+		waitTime = 1 
 		# Averaging Distance Control Parameters
 		avg_Dist_4 = 0
 		temp_dist = 0
@@ -776,7 +778,10 @@ def main():
 		start = time.time()
 		if(config.debugging):
 			ret, frame = cap.read()# 6 ms
-			frame = cv2.resize(frame,(Resized_width,Resized_height))
+			if ret:
+				frame = cv2.resize(frame,(Resized_width,Resized_height))
+			else:
+				break
 		else:
 			frame = vs.read().copy()
 		
@@ -866,6 +871,7 @@ def main():
 						# - Curvature represents orientation of car w.r.t image central axis
 			if(config.write):
 				if(config.Out_write):
+					#frame = cv2.resize(frame,(640,480))
 					out.write(frame)#8ms
 			if config.Profiling:
 				loopCount=loopCount+1
