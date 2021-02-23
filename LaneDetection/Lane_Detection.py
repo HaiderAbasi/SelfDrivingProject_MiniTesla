@@ -24,7 +24,7 @@ if (config.debugging==False):
 	from imutils.video import FPS
 	import imutils
 	import argparse
-	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
+	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane,beInLane_
 
 #==============================================================================================================
 if (config.debugging):

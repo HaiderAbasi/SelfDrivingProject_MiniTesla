@@ -55,7 +55,7 @@ def turnOfCar():
     dc_pwm.stop()
     servo_pwm.stop()
 
-def beInLane(Max_Sane_dist,distance,curvature):
+def beInLane_(Max_Sane_dist,distance,curvature):
     Max_turn_angle = 90
     Max_turn_angle_neg = -90
 
@@ -91,7 +91,7 @@ def beInLane(Max_Sane_dist,distance,curvature):
     setServoAngle(int(angle))
     return angle   
 
-def beInLane_(Max_Sane_dist,distance,curvature):
+def beInLane(Max_Sane_dist,distance,curvature):
     IncreaseTireSpeedInTurns = False
     
     Max_turn_angle = 90
