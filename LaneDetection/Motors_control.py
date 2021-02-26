@@ -28,7 +28,7 @@ dc_pwm=GPIO.PWM(enable_motor,1000)
 dc_pwm.start(0)
 servo_pwm=GPIO.PWM(servo_motor, 50)
 servo_pwm.start(0)
-car_speed=60
+car_speed=65
 dc_pwm.ChangeDutyCycle(car_speed)
 ## function names are self representing 
 def setServoAngle(angle):
@@ -55,44 +55,44 @@ def turnOfCar():
     dc_pwm.stop()
     servo_pwm.stop()
 
-def beInLane_(Max_Sane_dist,distance,curvature):
-    Max_turn_angle = 90
-    Max_turn_angle_neg = -90
-
-    CarTurn_angle = 0
-
-    if( (distance > Max_Sane_dist) or (distance < (-1 * Max_Sane_dist) ) ):
-        # Max sane distance reached ---> Max penalize (Max turn Tires)
-        if(distance > Max_Sane_dist):
-            #Car offseted left --> Turn full wheels right
-            CarTurn_angle = Max_turn_angle + curvature
-        else:
-            #Car Offseted right--> Turn full wheels left
-            CarTurn_angle = Max_turn_angle_neg + curvature
-    else:
-        # Within allowed distance limits for car and lane
-        # Interpolate distance to Angle Range
-        Turn_angle_interpolated = interp(distance,[-Max_Sane_dist,Max_Sane_dist],[-90,90])
-        print("Turn_angle_interpolated = ", Turn_angle_interpolated)
-        CarTurn_angle = Turn_angle_interpolated + curvature
-
-    # Handle Max Limit [if (greater then either limits) --> set to max limit]
-    if( (CarTurn_angle > (Max_turn_angle-30)) or (CarTurn_angle < ( (-1 *Max_turn_angle)+30 ) ) ):
-        if(CarTurn_angle > (Max_turn_angle-30)):
-            CarTurn_angle = Max_turn_angle
-        else:
-            CarTurn_angle = -Max_turn_angle
-
-    angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,65])
-    if(angle>55):
-        dc_pwm.ChangeDutyCycle(80)
-    else:
-        dc_pwm.ChangeDutyCycle(car_speed)
-    setServoAngle(int(angle))
-    return angle   
+# def beInLane_(Max_Sane_dist,distance,curvature):
+#     Max_turn_angle = 90
+#     Max_turn_angle_neg = -90
+# 
+#     CarTurn_angle = 0
+# 
+#     if( (distance > Max_Sane_dist) or (distance < (-1 * Max_Sane_dist) ) ):
+#         # Max sane distance reached ---> Max penalize (Max turn Tires)
+#         if(distance > Max_Sane_dist):
+#             #Car offseted left --> Turn full wheels right
+#             CarTurn_angle = Max_turn_angle + curvature
+#         else:
+#             #Car Offseted right--> Turn full wheels left
+#             CarTurn_angle = Max_turn_angle_neg + curvature
+#     else:
+#         # Within allowed distance limits for car and lane
+#         # Interpolate distance to Angle Range
+#         Turn_angle_interpolated = interp(distance,[-Max_Sane_dist,Max_Sane_dist],[-90,90])
+#         print("Turn_angle_interpolated = ", Turn_angle_interpolated)
+#         CarTurn_angle = Turn_angle_interpolated + curvature
+# 
+#     # Handle Max Limit [if (greater then either limits) --> set to max limit]
+#     if( (CarTurn_angle > (Max_turn_angle-30)) or (CarTurn_angle < ( (-1 *Max_turn_angle)+30 ) ) ):
+#         if(CarTurn_angle > (Max_turn_angle-30)):
+#             CarTurn_angle = Max_turn_angle
+#         else:
+#             CarTurn_angle = -Max_turn_angle
+# 
+#     angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,65])
+#     if(angle>55):
+#         dc_pwm.ChangeDutyCycle(80)
+#     else:
+#         dc_pwm.ChangeDutyCycle(car_speed)
+#     setServoAngle(int(angle))
+#     return angle   
 
 def beInLane(Max_Sane_dist,distance,curvature):
-    IncreaseTireSpeedInTurns = False
+    IncreaseTireSpeedInTurns = True
     
     Max_turn_angle = 90
     Max_turn_angle_neg = -90
@@ -121,11 +121,13 @@ def beInLane(Max_Sane_dist,distance,curvature):
         else:
             CarTurn_angle = -Max_turn_angle
 
-    angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[0,120])
+    angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[30,120])
 
     if IncreaseTireSpeedInTurns:
-        if(angle>55):
+        if(95<angle and angle<110):
             dc_pwm.ChangeDutyCycle(80)
+        elif(angle>110):
+            dc_pwm.ChangeDutyCycle(100)
         else:
             dc_pwm.ChangeDutyCycle(car_speed)
     

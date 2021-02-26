@@ -24,7 +24,7 @@ if (config.debugging==False):
 	from imutils.video import FPS
 	import imutils
 	import argparse
-	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane,beInLane_
+	from Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
 
 #==============================================================================================================
 if (config.debugging):
@@ -104,7 +104,7 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 				Offset_correction = 20
 
 			Mid_lowP[1] = MidLane.shape[0]# setting mid_trajectory_lowestPoint_Row to MaxRows of Image
-			#LanePoint_lower = ( int( (Mid_lowP[0]  + low_Col ) / 2 ) , int( Mid_lowP[1] ) )
+			#LanePoint_mlower = ( int( (Mid_lowP[0]  + low_Col ) / 2 ) , int( Mid_lowP[1] ) )
 			#LanePoint_top   = ( int( (Mid_highP[0] + high_Col) / 2 ) , int( Mid_highP[1]) )
 			LanePoint_lower =  (low_Col , int( Mid_lowP[1] ) )
 			LanePoint_top   =  (high_Col, int( Mid_highP[1]) )
