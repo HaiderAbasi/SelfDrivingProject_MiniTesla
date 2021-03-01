@@ -17,3 +17,17 @@ LaneDetection/__pycache__/utilities.cpython-36.pyc
 .vscode/settings.json
 LaneDetection/Results/out_320_240.avi
 LaneDetection/Results/out_640_480.avi
+Control/__pycache__/Drive.cpython-36.pyc
+Control/__pycache__/Motors_control.cpython-36.pyc
+Detection/Lanes/__pycache__/config.cpython-36.pyc
+Detection/Lanes/__pycache__/config.cpython-38.pyc
+Detection/Lanes/__pycache__/Lane_Detection.cpython-36.pyc
+Detection/Lanes/__pycache__/Lane_Extractor_3c_threaded.cpython-36.pyc
+Detection/Lanes/__pycache__/Lane_Extractor.cpython-36.pyc
+Detection/Lanes/__pycache__/Morph_op_3c_threaded.cpython-36.pyc
+Detection/Lanes/__pycache__/Morph_op.cpython-36.pyc
+Detection/Lanes/__pycache__/utilities_3c_threaded.cpython-36.pyc
+Detection/Lanes/__pycache__/utilities.cpython-36.pyc
+Detection/Lanes/Results/out_320_240.avi
+Detection/Lanes/Results/out_640_480.avi
+Detection/Signs/__pycache__/SignDetectionApi.cpython-36.pyc
