@@ -38,9 +38,10 @@ def main():
         cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
     else:
         forward()
-        vs = PiVideoStream((640,480),30).start()
+        #vs = PiVideoStream((640,480),30).start()
+        vs = PiVideoStream().start()
         time.sleep(2.0)
-        
+    frame_no = 0    
     while 1:
         
         start_detection = time.time()
@@ -52,13 +53,14 @@ def main():
                 break
         else:
             frame = vs.read().copy()
-            frame = cv2.resize(frame,(config.Resized_width,config.Resized_height))
+            #frame = cv2.resize(frame,(config.Resized_width,config.Resized_height))
 
         
         frame_orig = frame.copy()# Keep it for 
 
         distance, Curvature = Detect_Lane(frame)
-        detect_Signs(frame_orig,frame)
+        if ((frame_no %2 )==0):
+            detect_Signs(frame_orig,frame)
 
         Current_State = [distance, Curvature , frame]
         if (config.debugging==False):
@@ -68,6 +70,7 @@ def main():
         k = cv2.waitKey(config.waitTime)
         if k==27:
             break
+        frame_no = frame_no + 1
         end_detection = time.time()
         print("[Profiling] Complete Loop took ",end_detection - start_detection," sec <-->  ",(1/(end_detection - start_detection)),"  FPS ")
         print(">>=======================================================================================================<< ")
@@ -76,9 +79,10 @@ def main():
             config.loopCount = config.loopCount+1
             if(config.loopCount==50):
                 break
-
-    # When everything done, release the video capture and video write objects
-    cap.release()
+            
+    if(config.debugging):
+        # When everything done, release the video capture and video write objects
+        cap.release()
     
     if(config.write):
         if(config.In_write):
