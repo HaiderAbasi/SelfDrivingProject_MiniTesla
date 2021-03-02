@@ -3,9 +3,9 @@ import cv2
 import os
 import numpy as np 
 import time
-from .utilities import findLineParameter,findlaneCurvature,Distance_
-from .Lane_Extractor import GetLaneROI
-from .Morph_op import FindExtremas,BWContourOpen_speed
+from Detection.Lanes.utilities import findLineParameter,findlaneCurvature,Distance_
+from Detection.Lanes.Lane_Extractor import GetLaneROI
+from Detection.Lanes.Morph_op import FindExtremas,BWContourOpen_speed
 
 
 def Cord_Sort(cnts,order):

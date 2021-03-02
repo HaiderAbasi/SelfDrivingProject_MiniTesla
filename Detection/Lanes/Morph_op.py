@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 import time
-from .utilities import Distance, Distance_
+from Detection.Lanes.utilities import Distance, Distance_
 
 
 def BwareaOpen(img,MinArea):
