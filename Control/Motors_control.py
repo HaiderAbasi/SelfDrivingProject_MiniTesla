@@ -87,7 +87,7 @@ def beInLane(Max_Sane_dist,distance,curvature):
 
     angle = interp(CarTurn_angle,[-Max_turn_angle,Max_turn_angle],[30,120])
 
-    curr_speed = car_speed.copy()
+    curr_speed = car_speed
     if IncreaseTireSpeedInTurns:
         if(angle>95):
             car_speed_turn = interp(angle,[95,120],[80,100])

@@ -5,14 +5,14 @@ import cv2
 
 detect = 1 # Set to 1 for Lane detection
 
-Testing = True# Set to True --> if want to see what the car is seeing
+Testing = False# Set to True --> if want to see what the car is seeing
 Profiling = False # Set to True --> If you want to profile code
 write = False # Set to True --> If you want to Write input / output videos
 In_write = False
 Out_write = True
 
-debugging = True # Set to True --> If you want to debug code
-clr_segmentation_tuning = True # Set to True --> If you want to tune color segmentation parameters
+debugging = False # Set to True --> If you want to debug code
+clr_segmentation_tuning = False # Set to True --> If you want to tune color segmentation parameters
 
 
 #vid_path = os.path.abspath("Detection/Lanes/Inputs/signs_forward.mp4")
@@ -20,8 +20,8 @@ vid_path = os.path.abspath("Detection/Lanes/Inputs/in_16_2.avi")
 loopCount=0
 
 
-Resized_width = 640#320 # Control Parameter
-Resized_height = 480#240
+Resized_width = 320#640#320 # Control Parameter
+Resized_height = 240#480#240
 
 in_q = cv2.VideoWriter( os.path.abspath("LaneDetection/Results/in_16_2.avi") , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 out  = cv2.VideoWriter( os.path.abspath('LaneDetection/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))

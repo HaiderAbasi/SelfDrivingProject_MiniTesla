@@ -4,6 +4,7 @@ from Detection.Lanes.Lane_Detection import Detect_Lane
 import config
 if (config.debugging==False):
     from Control.Drive import Drive_Car
+    from Control.Motors_control import forward
     
 import cv2
 import time
@@ -51,6 +52,8 @@ def main():
                 break
         else:
             frame = vs.read().copy()
+            frame = cv2.resize(frame,(config.Resized_width,config.Resized_height))
+
         
         frame_orig = frame.copy()# Keep it for 
 
