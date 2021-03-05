@@ -61,8 +61,9 @@ def SignDetection(gray,cimg,frame_draw,model):
                             class_id ="2/"
                         else:
                             class_id ="3/"
-                        img_dir = "Detection/Signs/datasets/" + class_id
-                        img_name = "Detection/Signs/datasets/"+ class_id + str(detected_img)+".png"
+                        img_dir = os.path.abspath("Detection/Signs/datasets/") + class_id
+                        #img_name = "Detection/Signs/datasets/"+ class_id + str(detected_img)+".png"
+                        img_name = img_dir + str(detected_img)+".png"
                         if not os.path.exists(img_dir):
                             os.mkdir(img_dir)
                         cv2.imwrite(img_name , detected_sign)
