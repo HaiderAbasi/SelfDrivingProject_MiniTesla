@@ -41,7 +41,7 @@ def main():
         #vs = PiVideoStream((640,480),30).start()
         vs = PiVideoStream().start()
         time.sleep(2.0)
-    frame_no = 0    
+    frame_no = 0
     while 1:
         
         start_detection = time.time()
@@ -57,13 +57,14 @@ def main():
 
         
         frame_orig = frame.copy()# Keep it for 
+        if config.Detect_lane_N_Draw:
+            distance, Curvature = Detect_Lane(frame)
 
-        distance, Curvature = Detect_Lane(frame)
         if ((frame_no %4 )==0):
             detect_Signs(frame_orig,frame)
 
-        Current_State = [distance, Curvature , frame]
-        if (config.debugging==False):
+        if ( (config.debugging==False) and config.Detect_lane_N_Draw):
+            Current_State = [distance, Curvature , frame]
             Drive_Car(Current_State)
 
         cv2.imshow("What The Car Sees!!!",frame)

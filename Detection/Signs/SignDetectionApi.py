@@ -5,9 +5,13 @@ import os # for getting absolute filepath to mitigate cross platform inconsisten
 import cv2
 import time
 import numpy as np
+import config
 
 detected_img = 0 #Set this to current dataset images size so that new images number starts from there and dont overwrite
-write_data = False #Save dataset for future retraining
+if config.Detect_lane_N_Draw:
+    write_data = False
+else:
+    write_data = True
 draw_detected = True
 display_images = False
 model_loaded = False
@@ -49,15 +53,18 @@ def SignDetection(gray,cimg,frame_draw,model):
                     if(sign != "No_Sign"):
                         cv2.putText(frame_draw,sign,(endP[0]-20,startP[1]+10),cv2.FONT_HERSHEY_PLAIN,0.5,(0,0,255),1)
                     if write_data:
-                        if(sign=="speed_sign_40"):
-                            class_id="0/"
-                        elif(sign=="speed_sign_70"):
-                            class_id="1/"
-                        elif(sign=="stop"):
-                            class_id="2/"
+                        if  (sign =="speed_sign_40"):
+                            class_id ="0/"
+                        elif(sign =="speed_sign_70"):
+                            class_id ="1/"
+                        elif(sign =="stop"):
+                            class_id ="2/"
                         else:
-                            class_id="3/"
-                        img_name = "datasets/"+ class_id + str(detected_img)+".png"
+                            class_id ="3/"
+                        img_dir = "Detection/Signs/datasets/" + class_id
+                        img_name = "Detection/Signs/datasets/"+ class_id + str(detected_img)+".png"
+                        if not os.path.exists(img_dir):
+                            os.mkdir(img_dir)
                         cv2.imwrite(img_name , detected_sign)
                     if draw_detected:
                         if(sign != "No_Sign"):

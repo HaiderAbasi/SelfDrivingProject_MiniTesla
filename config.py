@@ -14,6 +14,7 @@ Out_write = True
 debugging = False # Set to True --> If you want to debug code
 clr_segmentation_tuning = False # Set to True --> If you want to tune color segmentation parameters
 
+Detect_lane_N_Draw = False
 
 #vid_path = os.path.abspath("Detection/Lanes/Inputs/signs_forward.mp4")
 vid_path = os.path.abspath("Detection/Lanes/Inputs/in_16_2.avi")
