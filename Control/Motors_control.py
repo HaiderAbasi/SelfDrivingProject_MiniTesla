@@ -16,7 +16,8 @@ import RPi.GPIO as GPIO
 motor_a = 20 
 motor_b = 21
 enable_motor = 16
-servo_motor=12 
+servo_motor=12
+run_car=True
 GPIO.setmode(GPIO.BCM)
     #Motors Setup
 GPIO.setup(motor_a,GPIO.OUT)
@@ -28,7 +29,10 @@ dc_pwm=GPIO.PWM(enable_motor,1000)
 dc_pwm.start(0)
 servo_pwm=GPIO.PWM(servo_motor, 50)
 servo_pwm.start(0)
-car_speed=0
+if run_car:
+    car_speed=65
+else:
+    car_speed=0
 dc_pwm.ChangeDutyCycle(car_speed)
 ## function names are self representing 
 def setServoAngle(angle):
@@ -91,11 +95,13 @@ def beInLane(Max_Sane_dist,distance,curvature):
     if IncreaseTireSpeedInTurns:
         if(angle>95):
             car_speed_turn = interp(angle,[95,120],[80,100])
-            #dc_pwm.ChangeDutyCycle(car_speed_turn)
+            if run_car:
+                dc_pwm.ChangeDutyCycle(car_speed_turn)
             curr_speed = car_speed_turn
         elif(angle<55):
             car_speed_turn = interp(angle,[30,55],[100,80])
-            #dc_pwm.ChangeDutyCycle(car_speed_turn)
+            if run_car:
+                dc_pwm.ChangeDutyCycle(car_speed_turn)
             curr_speed = car_speed_turn
         else:
             dc_pwm.ChangeDutyCycle(car_speed)

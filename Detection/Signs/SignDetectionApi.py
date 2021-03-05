@@ -47,7 +47,7 @@ def SignDetection(gray,cimg,frame_draw,model):
                 if(detected_sign.shape[1] and detected_sign.shape[0]):
                     sign = sign_classes[np.argmax(model(image_forKeras(detected_sign)))]
                     if(sign != "No_Sign"):
-                        cv2.putText(frame_draw,sign,(endP[0]-20,startP[1]-15),cv2.FONT_HERSHEY_PLAIN,1,(0,0,255),2)
+                        cv2.putText(frame_draw,sign,(endP[0]-20,startP[1]+10),cv2.FONT_HERSHEY_PLAIN,0.5,(0,0,255),1)
                     if write_data:
                         if(sign=="speed_sign_40"):
                             class_id="0/"

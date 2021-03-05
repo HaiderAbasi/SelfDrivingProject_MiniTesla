@@ -4,7 +4,7 @@ from Detection.Lanes.Morph_op import BwareaOpen,RetLargestContour,RetLargestCont
 import time
 import config
 
-Hue_Low = 74#83 63
+Hue_Low = 82#74#83 63
 #Lit_Low = 175#174#112 Prevopus
 Lit_Low = 95#174#112 
 Sat_Low = 0
@@ -12,7 +12,7 @@ Sat_Low = 0
 #Hue_Low_Y = 31
 #Hue_High_Y = 51
 Hue_Low_Y = 30
-Hue_High_Y = 38
+Hue_High_Y = 49#42#38
 #Hue_High_Y = 45
 Lit_Low_Y = 0
 Sat_Low_Y = 51

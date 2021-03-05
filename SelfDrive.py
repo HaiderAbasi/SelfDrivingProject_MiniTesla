@@ -4,7 +4,7 @@ from Detection.Lanes.Lane_Detection import Detect_Lane
 import config
 if (config.debugging==False):
     from Control.Drive import Drive_Car
-    from Control.Motors_control import forward
+    from Control.Motors_control import forward,turnOfCar
     
 import cv2
 import time
@@ -59,7 +59,7 @@ def main():
         frame_orig = frame.copy()# Keep it for 
 
         distance, Curvature = Detect_Lane(frame)
-        if ((frame_no %2 )==0):
+        if ((frame_no %4 )==0):
             detect_Signs(frame_orig,frame)
 
         Current_State = [distance, Curvature , frame]
@@ -83,7 +83,8 @@ def main():
     if(config.debugging):
         # When everything done, release the video capture and video write objects
         cap.release()
-    
+    else:
+        turnOfCar()
     if(config.write):
         if(config.In_write):
             config.in_q.release()
