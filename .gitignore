@@ -31,3 +31,5 @@ Detection/Lanes/__pycache__/utilities.cpython-36.pyc
 Detection/Lanes/Results/out_320_240.avi
 Detection/Lanes/Results/out_640_480.avi
 Detection/Signs/__pycache__/SignDetectionApi.cpython-36.pyc
+Detection/Lanes/Results/in_new.avi
+Detection/Lanes/Results/out_new.avi

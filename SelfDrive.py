@@ -33,7 +33,8 @@ def OnVidPosChange(val):
 	cap.set(cv2.CAP_PROP_POS_MSEC,Video_pos*1000)
 
 def main():
-    
+    print("cv2.__version__ = ",cv2.__version__)
+
     if (config.debugging):
         cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
     else:

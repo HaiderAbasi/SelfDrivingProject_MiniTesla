@@ -11,10 +11,10 @@ write = False # Set to True --> If you want to Write input / output videos
 In_write = False
 Out_write = True
 
-debugging = False # Set to True --> If you want to debug code
+debugging = True # Set to True --> If you want to debug code
 clr_segmentation_tuning = False # Set to True --> If you want to tune color segmentation parameters
 
-Detect_lane_N_Draw = False
+Detect_lane_N_Draw = True
 
 #vid_path = os.path.abspath("Detection/Lanes/Inputs/signs_forward.mp4")
 vid_path = os.path.abspath("Detection/Lanes/Inputs/in_16_2.avi")
@@ -24,8 +24,8 @@ loopCount=0
 Resized_width = 320#640#320 # Control Parameter
 Resized_height = 240#480#240
 
-in_q = cv2.VideoWriter( os.path.abspath("LaneDetection/Results/in_16_2.avi") , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
-out  = cv2.VideoWriter( os.path.abspath('LaneDetection/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+in_q = cv2.VideoWriter( os.path.abspath("Detection/Lanes/Results/in_new.avi") , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+out  = cv2.VideoWriter( os.path.abspath('Detection/Lanes/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 
 if debugging:
     waitTime = 1
