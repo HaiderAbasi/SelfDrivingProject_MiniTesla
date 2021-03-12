@@ -76,11 +76,17 @@ def main():
         
         FPS_str = str(int(1/(time.time() - start_detection))) + " FPS "
         cv2.putText(frame,FPS_str,(frame.shape[1]-70,20),cv2.FONT_HERSHEY_DUPLEX,0.5,(0,255,255),1)
+
         cv2.imshow("What The Car Sees!!!",frame)
         k = cv2.waitKey(config.waitTime)
 
         if k==27:
             break
+        
+        if(config.write):
+            if(config.Out_write):
+                config.out.write(frame)#8ms
+                
         frame_no = frame_no + 1
         end_detection = time.time()
         print("[Profiling] Complete Loop took ",end_detection - start_detection," sec <-->  ",(1/(end_detection - start_detection)),"  FPS ")

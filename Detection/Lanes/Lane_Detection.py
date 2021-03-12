@@ -449,9 +449,7 @@ def Detect_Lane(frame):
 		else:
 			Distance , Curvature = fetch_LaneInformation(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
 		
-		if(config.write):
-			if(config.Out_write):
-				config.out.write(frame)#8ms
+
 		
 	else:
 		cv2.imshow("frame",frame)
