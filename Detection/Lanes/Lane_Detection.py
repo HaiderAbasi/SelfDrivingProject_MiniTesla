@@ -360,8 +360,9 @@ def DrawProbablePath_(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,O
 		texttoPut="Curvature = " + f"{curvature:.2f}"
 		texttoPut2="Distance = " + str(PerpDist_ImgCen_CarNose)
 		#print(texttoPut)
-		cv2.putText(Out_image,texttoPut,(Out_image.shape[1]-400,50),cv2.FONT_HERSHEY_DUPLEX,1,(0,255,255),2)
-		cv2.putText(Out_image,texttoPut2,(Out_image.shape[1]-400,80),cv2.FONT_HERSHEY_DUPLEX,1,(0,255,255),2)
+		textSize_ratio = 0.5
+		cv2.putText(Out_image,texttoPut,(10,30),cv2.FONT_HERSHEY_DUPLEX,textSize_ratio,(0,255,255),1)
+		cv2.putText(Out_image,texttoPut2,(10,50),cv2.FONT_HERSHEY_DUPLEX,textSize_ratio,(0,255,255),1)
 		
 		#Out_image = cv2.resize(Out_image,(1280,720))
 		drawn=True		

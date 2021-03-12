@@ -59,8 +59,20 @@ def turnOfCar():
     dc_pwm.stop()
     servo_pwm.stop()
 
-def beInLane(Max_Sane_dist,distance,curvature):
+def beInLane(Max_Sane_dist,distance,curvature , Mode , Tracked_class):
     IncreaseTireSpeedInTurns = True
+
+    if(Tracked_class~=0):
+        if  (signTrack.Tracked_class =="speed_sign_70"):
+            new_speed = 70
+        elif(signTrack.Tracked_class =="speed_sign_80"):
+            new_speed = 80
+        elif(signTrack.Tracked_class =="stop"):
+            new_speed = 0
+        else:
+            new_speed = -1
+        
+        print("*** Changing car speed to ",new_speed," ***")
     
     Max_turn_angle = 90
     Max_turn_angle_neg = -90

@@ -42,7 +42,11 @@ def main():
         #vs = PiVideoStream((640,480),30).start()
         vs = PiVideoStream().start()
         time.sleep(2.0)
+    
     frame_no = 0
+    Mode = "Detection"
+    Tracked_class = 0
+
     while 1:
         
         start_detection = time.time()
@@ -61,15 +65,20 @@ def main():
         if config.Detect_lane_N_Draw:
             distance, Curvature = Detect_Lane(frame)
 
-        if ((frame_no %4 )==0):
-            detect_Signs(frame_orig,frame)
+        #if ((frame_no %4 )==0):
+            #detect_Signs(frame_orig,frame)
+        
+        Mode , Tracked_class = detect_Signs(frame_orig,frame)
 
         if ( (config.debugging==False) and config.Detect_lane_N_Draw):
-            Current_State = [distance, Curvature , frame]
+            Current_State = [distance, Curvature , frame , Mode , Tracked_class]
             Drive_Car(Current_State)
-
+        
+        FPS_str = str(int(1/(time.time() - start_detection))) + " FPS "
+        cv2.putText(frame,FPS_str,(frame.shape[1]-70,20),cv2.FONT_HERSHEY_DUPLEX,0.5,(0,255,255),1)
         cv2.imshow("What The Car Sees!!!",frame)
         k = cv2.waitKey(config.waitTime)
+
         if k==27:
             break
         frame_no = frame_no + 1

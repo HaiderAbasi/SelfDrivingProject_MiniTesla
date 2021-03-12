@@ -16,8 +16,8 @@ clr_segmentation_tuning = False # Set to True --> If you want to tune color segm
 
 Detect_lane_N_Draw = True
 
-#vid_path = os.path.abspath("Detection/Lanes/Inputs/signs_forward.mp4")
-vid_path = os.path.abspath("Detection/Lanes/Inputs/in_16_2.avi")
+vid_path = os.path.abspath("Detection/Lanes/Inputs/signs_forward.mp4")
+#vid_path = os.path.abspath("Detection/Lanes/Inputs/in_16_2.avi")
 loopCount=0
 
 
