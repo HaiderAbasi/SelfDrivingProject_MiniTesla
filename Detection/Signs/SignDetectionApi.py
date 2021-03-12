@@ -159,7 +159,7 @@ def SignDetection_Nd_Tracking(gray,cimg,frame_draw,model):
 
                         if(sign != "No_Sign"):
                             if match_found:
-                                
+
                                 signTrack.known_centers_confidence[match_idx] += 1
 
                                 if(signTrack.known_centers_confidence[match_idx] > 3):
@@ -209,12 +209,6 @@ def SignDetection_Nd_Tracking(gray,cimg,frame_draw,model):
                 cv2.waitKey(1)
     else:
         #Tracking
-        if  (signTrack.Tracked_class =="speed_sign_70"):
-            class_id ="0/"
-        elif(signTrack.Tracked_class =="speed_sign_80"):
-            class_id ="1/"
-        elif(signTrack.Tracked_class =="stop"):
-            class_id ="2/"
                 
         # Calculate optical flow
         p1, st, err = cv2.calcOpticalFlowPyrLK(signTrack.old_gray, gray, signTrack.p0, None,**signTrack.lk_params)
@@ -264,9 +258,7 @@ def detect_Signs(frame,frame_draw):
     # Localizing Potetial Candidates and Classifying them in SignDetection
     start_signDetection = time.time()
     cv2.putText(frame_draw,signTrack.mode,(10,10),cv2.FONT_HERSHEY_PLAIN,0.5,(255,255,255),1)
-    cv2.putText(frame_draw,str(len(signTrack.known_centers)),(70,10),cv2.FONT_HERSHEY_PLAIN,0.7,(255,255,255),1)
-    cv2.putText(frame_draw,str(len(signTrack.known_centers_confidence)),(100,10),cv2.FONT_HERSHEY_PLAIN,0.7,(255,255,255),1)
-    cv2.putText(frame_draw,str(len(signTrack.p0)),(120,10),cv2.FONT_HERSHEY_PLAIN,0.7,(255,255,255),1)
+    
     #SignDetection(gray.copy(),frame.copy(),frame_draw,model)
     SignDetection_Nd_Tracking(gray.copy(),frame.copy(),frame_draw,model)
     end_signDetection = time.time()
