@@ -61,14 +61,17 @@ def turnOfCar():
 
 def beInLane(Max_Sane_dist,distance,curvature , Mode , Tracked_class):
     IncreaseTireSpeedInTurns = True
-
-    if(Tracked_class~=0):
-        if  (signTrack.Tracked_class =="speed_sign_70"):
+    global car_speed
+    if(Tracked_class!=0):
+        if  (Tracked_class =="speed_sign_70"):
             new_speed = 70
-        elif(signTrack.Tracked_class =="speed_sign_80"):
+            car_speed = 70
+        elif(Tracked_class =="speed_sign_80"):
             new_speed = 80
-        elif(signTrack.Tracked_class =="stop"):
+            car_speed = 80
+        elif(Tracked_class =="stop"):
             new_speed = 0
+            car_speed = 0
         else:
             new_speed = -1
         
