@@ -411,7 +411,7 @@ def Detect_Lane(frame):
         # Extracting Outer and Middle lanes using colour Segmentation in HSL mode
 		Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,_,OuterLane_TwoSide,OuterLane_Points = GetLaneROI(frame_cropped,config.minArea_resized)#64 ms
 		end_getlanes = time.time()
-		print("[Profiling] GetLane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes)),"  FPS ")
+		print("[Profiling] GetLane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes+0.00001)),"  FPS ")
 		if(config.debugging):
 			cv2.imshow('Mid_edge_ROI',Mid_edge_ROI)	
 

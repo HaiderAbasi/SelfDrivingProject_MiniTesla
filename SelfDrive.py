@@ -45,6 +45,7 @@ def main():
     
     frame_no = 0
     Mode = "Detection"
+    prev_Mode = "Detection"
     Tracked_class = 0
 
     while 1:
@@ -67,8 +68,11 @@ def main():
 
         #if ((frame_no %4 )==0):
             #detect_Signs(frame_orig,frame)
-        
-        Mode , Tracked_class = detect_Signs(frame_orig,frame)
+
+        if ( ((frame_no %2 )==0) or (prev_Mode == "Tracking") ):
+            Mode , Tracked_class = detect_Signs(frame_orig,frame)
+            prev_Mode = Mode
+        #Mode , Tracked_class = detect_Signs(frame_orig,frame)
 
         if ( (config.debugging==False) and config.Detect_lane_N_Draw):
             Current_State = [distance, Curvature , frame , Mode , Tracked_class]

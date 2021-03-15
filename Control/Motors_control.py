@@ -1,5 +1,4 @@
 #!/usr/bin/enable_motorv python3
-
 # This Code controls Dc motor and servo motor through pwm
 # We defined all gpio pins in BCM mode and create a switch statment to test all
 #DC motor pwm -> 0-100 (direct duty cycle)
@@ -18,6 +17,7 @@ motor_b = 21
 enable_motor = 16
 servo_motor=12
 run_car=True
+prev_Mode = "Detection"
 GPIO.setmode(GPIO.BCM)
     #Motors Setup
 GPIO.setup(motor_a,GPIO.OUT)
@@ -60,22 +60,18 @@ def turnOfCar():
     servo_pwm.stop()
 
 def beInLane(Max_Sane_dist,distance,curvature , Mode , Tracked_class):
+
     IncreaseTireSpeedInTurns = True
     global car_speed
-    if(Tracked_class!=0):
+    if((Tracked_class!=0) and (prev_Mode == "Tracking") and (Mode == "Detection")):
         if  (Tracked_class =="speed_sign_70"):
-            new_speed = 70
             car_speed = 70
         elif(Tracked_class =="speed_sign_80"):
-            new_speed = 80
             car_speed = 80
         elif(Tracked_class =="stop"):
-            new_speed = 0
             car_speed = 0
-        else:
-            new_speed = -1
         
-        print("*** Changing car speed to ",new_speed," ***")
+    prev_Mode = Mode # Set prevMode to current Mode
     
     Max_turn_angle = 90
     Max_turn_angle_neg = -90
