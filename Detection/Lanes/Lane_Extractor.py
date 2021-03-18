@@ -42,7 +42,6 @@ def OnSatLowChange_Y(val):
 	Sat_Low_Y = val
 
 
-
 #cv2.namedWindow("HSL",cv2.WINDOW_NORMAL)
 #cv2.namedWindow("frame_Lane",cv2.WINDOW_NORMAL)
 #cv2.namedWindow("Lane_gray",cv2.WINDOW_NORMAL)
@@ -51,6 +50,7 @@ def OnSatLowChange_Y(val):
 #cv2.namedWindow("Lane_edge",cv2.WINDOW_NORMAL)
 #cv2.namedWindow("Lane_edge_ROI",cv2.WINDOW_NORMAL)
 #cv2.namedWindow("Mid_ROI_mask",cv2.WINDOW_NORMAL)
+
 
 if(config.clr_segmentation_tuning):
 
@@ -65,7 +65,6 @@ if(config.clr_segmentation_tuning):
     cv2.createTrackbar("Hue_H","mask_Y",Hue_High_Y,255,OnHueHighChange_Y)
     cv2.createTrackbar("Lit_L","mask_Y",Lit_Low_Y,255,OnLitLowChange_Y)
     cv2.createTrackbar("Sat_L","mask_Y",Sat_Low_Y,255,OnSatLowChange_Y)
-
 
 def clr_segment(HSL,lower_range,upper_range):
     lower = np.array( [lower_range[0],lower_range[1] ,lower_range[2]] )
@@ -145,7 +144,6 @@ def OuterLaneROI(frame,mask,minArea):
     #return Lane_edge_ROI,Lane_ROI_mask,Lane_OneSide,Outer_Points_list
     return Lane_edge,Lane_gray_opened,Lane_OneSide,Outer_Points_list
 
-#def GetLaneROI(frame,minArea,CropHeight_resized):
 def GetLaneROI(frame,minArea):
 
     #start_To_clr_segment = time.time()

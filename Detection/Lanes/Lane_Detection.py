@@ -8,8 +8,8 @@ from Detection.Lanes.Lane_Extractor import GetLaneROI
 from Detection.Lanes.Morph_op import FindExtremas,BWContourOpen_speed
 
 
-
 def Cord_Sort(cnts,order):
+
     if cnts:
         cnt=cnts[0]
         cnt=np.reshape(cnt,(cnt.shape[0],cnt.shape[2]))
@@ -60,7 +60,7 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 	else:
 		return False,is_Ref_to_path_Left
 
-def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
+def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 	#  Fetching the closest outer lane to mid lane is the main goal here
 	if (config.debugging):
 		cv2.imshow("OuterLanes",OuterLanes)
@@ -187,7 +187,7 @@ def FindClosestLane_(OuterLanes,MidLane,OuterLane_Points):
 	else:
 		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 
-def ExtendBothLane2(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
+def ExtendBothLane(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
 
 	Image_bottom = Lane.shape[0]
 	
@@ -239,13 +239,13 @@ def ExtendBothLane2(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
 
 	return Lane , OuterLane
 
-def ExtendShortLane_(MidLane,Mid_cnts,Outer_cnts,OuterLane):
+def ExtendShortLane(MidLane,Mid_cnts,Outer_cnts,OuterLane):
 
 	if(Mid_cnts and Outer_cnts):
 		Mid_cnts_Rowsorted = Cord_Sort(Mid_cnts,"rows")
 		Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
 
-		MidLane,OuterLane = ExtendBothLane2(MidLane,OuterLane,Mid_cnts_Rowsorted,Outer_cnts_Rowsorted)
+		MidLane,OuterLane = ExtendBothLane(MidLane,OuterLane,Mid_cnts_Rowsorted,Outer_cnts_Rowsorted)
 
 	return MidLane,OuterLane
 
@@ -307,7 +307,7 @@ def LanePoints(MidLane,OuterLane,Offset_correction):
 	else:
 		return (0,0),(0,0)
 
-def DrawProbablePath_(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Offset_correction):
+def DrawProbablePath(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Offset_correction):
 	Lanes_combined = cv2.bitwise_or(Outer_Lane,Mid_lane)
 	#cv2.namedWindow("Lanes_combined",cv2.WINDOW_NORMAL)
 	if config.Testing:
@@ -394,7 +394,9 @@ def fetch_LaneInformation(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,fra
 	else:
 		return -1000,-1000
 	
+	
 def Detect_Lane(frame):
+
 	Distance = -1000
 	Curvature = -1000
 	frame_cropped = frame[config.CropHeight_resized_crop:,:]
@@ -430,11 +432,11 @@ def Detect_Lane(frame):
 			cv2.imshow('Mid_trajectory_largest',Mid_trajectory_largest)
 		
 		# Once we have the mid and outer lanes Only keep the closest outer lane to mid lane
-		OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane_(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
+		OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
 
         # Extend Short Lane (Either Mid or Outer)So that both has same location of foot
         #Mid_trajectory_largest,OuterLane_OneSide, NonExtendedLane = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)#3ms
-		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane_(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
+		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
 		
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_trajectory_largest)
 		Mid_edge_ROI = RefineMidEdgeROi(Mid_trajectory,Mid_ROI_mask,Mid_edge_ROI)#6ms
@@ -443,13 +445,11 @@ def Detect_Lane(frame):
 		if config.Testing:
 			Distance , Curvature = fetch_LaneInformation(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
 			
-			Out_image , drawn = DrawProbablePath_(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
+			Out_image , drawn = DrawProbablePath(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
 			#cv2.imshow('frame',frame)
 			#k = cv2.waitKey(config.waitTime)
 		else:
 			Distance , Curvature = fetch_LaneInformation(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms
-		
-
 		
 	else:
 		cv2.imshow("frame",frame)
