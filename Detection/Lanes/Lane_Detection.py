@@ -435,7 +435,6 @@ def Detect_Lane(frame):
 		OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
 
         # Extend Short Lane (Either Mid or Outer)So that both has same location of foot
-        #Mid_trajectory_largest,OuterLane_OneSide, NonExtendedLane = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)#3ms
 		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
 		
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_trajectory_largest)

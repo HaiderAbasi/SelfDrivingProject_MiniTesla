@@ -1,8 +1,8 @@
 from Control.Motors_control import forward,backward,setServoAngle,stop,turnOfCar,changePwm,beInLane
 import config
 import cv2
-def Steer(Distance,Curvature,frame , Mode , Tracked_class):
-    
+
+def Steer(Distance,Curvature,frame , Mode , Tracked_class):    
     if config.Testing:
         if(Distance != -1000 | Curvature != -1000):
             if (config.debugging==False):		
@@ -19,4 +19,3 @@ def Steer(Distance,Curvature,frame , Mode , Tracked_class):
 def Drive_Car(Current_State):
     [distance, Curvature, frame_disp , Mode , Tracked_class] = Current_State
     Steer(distance,Curvature,frame_disp , Mode , Tracked_class)
-

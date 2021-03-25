@@ -12,7 +12,7 @@ In_write = False
 Out_write = False
 
 debugging = True # Set to True --> If you want to debug code
-clr_segmentation_tuning = False # Set to True --> If you want to tune color segmentation parameters
+clr_segmentation_tuning = True # Set to True --> If you want to tune color segmentation parameters
 
 Detect_lane_N_Draw = True
 
@@ -28,7 +28,7 @@ in_q = cv2.VideoWriter( os.path.abspath("Detection/Lanes/Results/in_new.avi") , 
 out  = cv2.VideoWriter( os.path.abspath('Detection/Lanes/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 
 if debugging:
-    waitTime = 1
+    waitTime = 100
 else:
     waitTime = 1
 
