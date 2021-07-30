@@ -251,12 +251,13 @@ def ExtendShortLane(MidLane,Mid_cnts,Outer_cnts,OuterLane):
 
 def RefineMidEdgeROi(Mid_trajectory,Mid_ROI_mask,Mid_edge_ROI):
 
-	contours_trajectory= cv2.findContours(Mid_trajectory,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[1]
+	contours_trajectory = cv2.findContours(Mid_trajectory,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[1]
 	contours = cv2.findContours(Mid_ROI_mask,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[1]
 	Mid_ROI_mask_refined = np.zeros(Mid_ROI_mask.shape,Mid_ROI_mask.dtype)
+
 	Modified= False
 	for index, cnt in enumerate(contours):
-		Draw=False
+		Draw = False
 		for i in range(len(contours_trajectory)):
 			PointTotest = contours_trajectory[i][0][0]
 			#print("PointTotest",PointTotest)
@@ -438,8 +439,14 @@ def Detect_Lane(frame):
 		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
 		
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_trajectory_largest)
-		Mid_edge_ROI = RefineMidEdgeROi(Mid_trajectory,Mid_ROI_mask,Mid_edge_ROI)#6ms
-        
+		#if(config.debugging):
+			#cv2.imshow('Mid_edge_ROI before',Mid_edge_ROI)
+			#cv2.imshow('Mid_trajectory after',Mid_trajectory)
+
+		#Mid_edge_ROI = RefineMidEdgeROi(Mid_trajectory,Mid_ROI_mask,Mid_edge_ROI)#6ms
+		Mid_edge_ROI = Mid_trajectory.copy()
+		#if(config.debugging):
+			#cv2.imshow('Mid_edge_ROI after',Mid_edge_ROI)
         # Using Both outer and middle information to create probable path and extract
 		if config.Testing:
 			Distance , Curvature = fetch_LaneInformation(OuterLane_OneSide,Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,Mid_edge_ROI,frame_cropped,Offset_correction)#20ms

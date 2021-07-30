@@ -208,6 +208,5 @@ def detect_Signs(frame,frame_draw):
     SignDetection_Nd_Tracking(gray.copy(),frame.copy(),frame_draw,model)
     end_signDetection = time.time()
 
-    print("[Profiling] [ ",signTrack.mode," ] SignDetection took ",end_signDetection - start_signDetection," sec <-->  ")
     print("[Profiling] [ ",signTrack.mode," ] SignDetection took ",end_signDetection - start_signDetection," sec <-->  ",(1/(end_signDetection - start_signDetection + 0.0001)),"  FPS ")
     return signTrack.mode , signTrack.Tracked_class

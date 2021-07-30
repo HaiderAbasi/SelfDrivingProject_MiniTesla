@@ -51,6 +51,7 @@ def main():
     while 1:
         
         start_detection = time.time()
+        start_ = time.time()
         if(config.debugging):
             ret, frame = cap.read()# 6 ms
             if ret:
@@ -62,36 +63,47 @@ def main():
             #frame = cv2.resize(frame,(config.Resized_width,config.Resized_height))
 
         
-        frame_orig = frame.copy()# Keep it for 
+        frame_orig = frame.copy()# Keep it for
+
+        end_ = time.time()
+        print("[Profiling] Read and Resize Loop took ",end_ - start_," sec <-->  ",(1/(end_ - start_+0.00001)),"  FPS ")
+ 
+        start_getlanes = time.time()
         if config.Detect_lane_N_Draw:
             distance, Curvature = Detect_Lane(frame)
-
+        
+        end_getlanes = time.time()
+        print("[Profiling] Detect_Lane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes+0.00001)),"  FPS ")
         #if ((frame_no %4 )==0):
             #detect_Signs(frame_orig,frame)
 
         #if ( ((frame_no %2 )==0) or (prev_Mode == "Tracking") ):
         #    Mode , Tracked_class = detect_Signs(frame_orig,frame)
         #    prev_Mode = Mode
-        
+        start_signs = time.time()
         Mode , Tracked_class = detect_Signs(frame_orig,frame)
-
+        end_signs = time.time()
+        print("[Profiling] detect_Signs Loop took ",end_signs - start_signs," sec <-->  ",(1/(end_signs - start_signs+0.00001)),"  FPS ")
+        
         if ( (config.debugging==False) and config.Detect_lane_N_Draw):
             Current_State = [distance, Curvature , frame , Mode , Tracked_class]
             Drive_Car(Current_State)
         
+        start_last = time.time()
         FPS_str = str(int(1/(time.time() - start_detection))) + " FPS "
         cv2.putText(frame,FPS_str,(frame.shape[1]-70,20),cv2.FONT_HERSHEY_DUPLEX,0.5,(0,255,255),1)
 
         cv2.imshow("What The Car Sees!!!",frame)
         k = cv2.waitKey(config.waitTime)
-
         if k==27:
             break
         
         if(config.write):
             if(config.Out_write):
                 config.out.write(frame)#8ms
-                
+        end_last = time.time()
+        print("[Profiling] End Loop took ",end_last - start_last," sec <-->  ",(1/(end_last - start_last+0.00001)),"  FPS ")
+
         frame_no = frame_no + 1
         end_detection = time.time()
         print("[Profiling] Complete Loop took ",end_detection - start_detection," sec <-->  ",(1/(end_detection - start_detection)),"  FPS ")
@@ -99,7 +111,7 @@ def main():
         
         if config.Profiling:
             config.loopCount = config.loopCount+1
-            if(config.loopCount==50):
+            if(config.loopCount==150):
                 break
             
     if(config.debugging):

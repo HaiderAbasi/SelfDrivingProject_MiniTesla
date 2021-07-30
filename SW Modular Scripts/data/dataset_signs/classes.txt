@@ -1,0 +1,4 @@
+0_road_sign_70
+1_road_sign_80
+2_stop
+3_NoSign
