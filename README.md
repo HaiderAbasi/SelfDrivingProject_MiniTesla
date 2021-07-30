@@ -15,6 +15,11 @@
 This repository is of Course : **Self Driving Car using raspbery pi in Python**
 We will make things so simplified with our recorded lectures that you can easily build your own Self Drivind car from scratch.
 
+## Model ready for 3D printing 
+- **Tesla-Like Self Driving Car** : Custom Created Ackerman Drive from Scratch for the Course 
+
+![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Upper_body_full.png)
+
 Here is what you need:
 
 **Software Requirements**
@@ -31,7 +36,8 @@ Here is what you need:
 * You Can get 3D print the model of Tesla Mini Truck in Fusion 360 Folder
 
 *Link to the Course*
-Udemy - [@udemy_link](https://www.udemy.com/user/e8894488-eb79-45f5-aef1-f3a8733b6f43/)
+Udemy - [Discounted Link](GITHUB_DISCOUNT)
+
 ## Using this Repository
 
 Just fork the repository on your Raspebery pi and install are required packages mentioned above.
@@ -44,8 +50,8 @@ Run with
 
 ## Instructors
 
-Haider Najeeb   (Computer Vision)-  [@linked_in_profile](https://www.linkedin.com/in/haider-najeeb-68812516a/)  
-Muhammad Luqman (Hardware Designing)- [@linked_in_profile](https://www.linkedin.com/in/muhammad-luqman-9b227a11b/)  
+Haider Najeeb   (Computer Vision)    -  [Profile Link](https://www.linkedin.com/in/haider-najeeb-68812516a/)  
+Muhammad Luqman (Hardware Designing) - [Profile Link](https://www.linkedin.com/in/muhammad-luqman-9b227a11b/)  
 
 ## License
 
