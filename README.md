@@ -36,6 +36,7 @@ Here is what you need:
 * You Can get 3D print the model of Tesla Mini Truck in Fusion 360 Folder
 
 ## Link to the Course
+![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Tesla%20Self%20Driving%20Car.png)
 
 **Udemy - [Discounted Link](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
