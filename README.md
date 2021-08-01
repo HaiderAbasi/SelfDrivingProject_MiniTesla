@@ -35,8 +35,9 @@ Here is what you need:
 * Base of car + Sterring mechanism
 * You Can get 3D print the model of Tesla Mini Truck in Fusion 360 Folder
 
-*Link to the Course*
-Udemy - [Discounted Link](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)
+## Link to the Course
+
+**Udemy - [Discounted Link](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
 ## Using this Repository
 
