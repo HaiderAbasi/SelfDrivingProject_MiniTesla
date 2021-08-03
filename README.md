@@ -18,7 +18,7 @@ We will make things so simplified with our recorded lectures that you can easily
 ## Model ready for 3D printing 
 - **Tesla-Like Self Driving Car** : Custom Created Ackerman Drive from Scratch for the Course 
 
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Upper_body_full.png)
+![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/car_building.gif)
 
 Here is what you need:
 
