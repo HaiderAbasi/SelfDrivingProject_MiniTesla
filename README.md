@@ -1,8 +1,10 @@
 # Self Driving Car with OpenCV
 ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Jadu_Export_Quality.png)
 
+
+
 <details open="open">
-  <summary>"#Table of Contents"</summary>
+  <summary>Table of Contents</summary>
   <ol>
     <li><a href="#About-the-project">About The Project</a></li>
     <li><a href="#Usage">Using this Repository</a></li>
