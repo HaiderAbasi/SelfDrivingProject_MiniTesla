@@ -41,7 +41,8 @@ Here is what you need:
 ## Link to the Course
 ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Tesla%20Self%20Driving%20Car.png)
 
-**(Udemy) - [Link](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/)**
+## Udemy
+**[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
 ## Using this Repository
 
