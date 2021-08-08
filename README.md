@@ -1,7 +1,6 @@
 # Self Driving Car with OpenCV
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Jadu_Export_Quality.png)
-
-
+[![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/youtube_thumnail.png)](https://www.youtube.com/watch?v=d1arwxOewl0 "Click to Watch Intro Video on Youtube")
+Click on the Image to start view the intro video .
 
 <details open="open">
   <summary>Table of Contents</summary>
@@ -23,7 +22,8 @@ We will make things so simplified with our recorded lectures that you can easily
 
 ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/car_building.gif)
 
-Here is what you need:
+
+#### Here is what you need:
 
 **Software Requirements**
 * Our course for deep undertanding of our code
