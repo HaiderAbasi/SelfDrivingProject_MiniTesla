@@ -38,9 +38,8 @@ Just fork the repository on your Raspebery pi and install all required packages 
 
 Run with 
   ```sh
-  python3 {your_directory}/LaneDetection/Lane_Detection.py 
+  python3 {your_directory}/SelfDrive.py 
   ```
-
 
 ## Instructors
 
