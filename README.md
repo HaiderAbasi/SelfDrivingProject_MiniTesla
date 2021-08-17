@@ -34,7 +34,7 @@ Here is what you need:
 Udemy - [@udemy_link](https://www.udemy.com/user/e8894488-eb79-45f5-aef1-f3a8733b6f43/)
 ## Using this Repository
 
-Just fork the repository on your Raspebery pi and install are required packages mentioned above.
+Just fork the repository on your Raspebery pi and install all required packages mentioned above.
 
 Run with 
   ```sh
