@@ -100,7 +100,7 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 			print("[FindClosestLane] [(len(OuterLane_Points)==2)] OuterLane_Points ",OuterLane_Points)
 			print("[FindClosestLane] [(len(OuterLane_Points)==2)] len(Outer_cnts) ",len(Outer_cnts))
 			print("[FindClosestLane] [(len(OuterLane_Points)==2)] Closest_Index ",Closest_Index)
-		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 2)
+		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 1)
 		Outer_cnts_ret = [Outer_cnts[Closest_Index]]
 		# ================================ Adding the nEW stuff =====================================
 		# The idea is to find lane points here and determine if trajectory is crossing midlane
@@ -181,7 +181,7 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 
 		#print(" Mid_lower_row = ", Mid_lowP[1])
 		#print(" Mid_higher_row = ", Mid_highP[1])
-		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
+		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,1)		
 		Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 	else:
@@ -401,10 +401,6 @@ def Detect_Lane(frame):
 	Distance = -1000
 	Curvature = -1000
 	frame_cropped = frame[config.CropHeight_resized_crop:,:]
-	
-	if(config.write):
-		if(config.In_write):
-			config.in_q.write(frame)
 			
 	if config.detect:
 		if (config.debugging):
@@ -412,20 +408,22 @@ def Detect_Lane(frame):
 			
 		start_getlanes = time.time()
         # Extracting Outer and Middle lanes using colour Segmentation in HSL mode
-		Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,_,OuterLane_TwoSide,OuterLane_Points = GetLaneROI(frame_cropped,config.minArea_resized)#64 ms
+		Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,OuterLane_TwoSide,OuterLane_Points = GetLaneROI(frame_cropped,config.minArea_resized)#64 ms
 		end_getlanes = time.time()
 		print("[Profiling] GetLane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes+0.00001)),"  FPS ")
-		if(config.debugging):
-			cv2.imshow('Mid_edge_ROI',Mid_edge_ROI)	
+		#if(config.debugging):
+			#cv2.imshow('Mid_edge_ROI',Mid_edge_ROI)	
 
         # Using polyfit to estimate the trajectory of outer lane
 		Mid_trajectory = Mid_edge_ROI.copy()
-		if(config.debugging):
-			cv2.imshow('Mid_trajectory before',Mid_trajectory)	
 		# Keeping only the Estimated trajectory upto the ROI we decided
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_ROI_mask)# 0.1ms
-		if(config.debugging):
-			cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)
+		# 3. Dilating Segmented ROI's
+		kernel = cv2.getStructuringElement(shape=cv2.MORPH_ELLIPSE, ksize=(3,3))
+		Mid_trajectory = cv2.morphologyEx(Mid_trajectory, cv2.MORPH_DILATE, kernel)
+		Mid_trajectory = cv2.morphologyEx(Mid_trajectory, cv2.MORPH_ERODE, kernel)
+		#if(config.debugging):
+			#cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)
 		# Remove small contours and keep only largest
 		Mid_trajectory_largest = BWContourOpen_speed(Mid_trajectory,config.MaxDist_resized)#13msec
 		if(config.debugging):
