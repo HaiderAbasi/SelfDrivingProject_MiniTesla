@@ -1,0 +1,10 @@
+>>>>>>>>>>>>>>>> LINUX Commands  <<<<<<<,<<<<<<<<
+
+python3 -m pip install --user virtualenv
+
+python3 -m virtualenv sdc_env
+
+source sdc_env/bin/activate
+
+pip3 install -r requirements.txt
+
