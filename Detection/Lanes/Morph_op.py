@@ -184,10 +184,10 @@ def Ret_LowestEdgePoints(gray):
     Top_Row,Bot_Row = FindExtremas(thresh)
 
     #cv2.namedWindow("thresh",cv2.WINDOW_NORMAL)
-    cv2.imshow("thresh",thresh)
+    #cv2.imshow("thresh",thresh)
 
     Contour_TopBot_PortionCut = ROI_extracter(thresh,(0, Top_Row + 5),(thresh.shape[1],Bot_Row-5))
-    cv2.imshow("Contour_TopBot_PortionCut",Contour_TopBot_PortionCut)
+    #cv2.imshow("Contour_TopBot_PortionCut",Contour_TopBot_PortionCut)
 
     cnts2 = cv2.findContours(Contour_TopBot_PortionCut, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[1]
 
@@ -195,16 +195,11 @@ def Ret_LowestEdgePoints(gray):
     LowRow_b=-1
     
     Euc_row=0# Row for the points to be compared
-
     First_line = np.copy(Lane_OneSide)
     cnts_tmp = []
-    
-    print("len(cnts2) = ",len(cnts2))
-
     if(len(cnts2)>1):
         for index_tmp, cnt_tmp in enumerate(cnts2):
             if((cnt_tmp.shape[0])>50):
-                print("cnt_tmp.shape = ",cnt_tmp.shape )
                 cnts_tmp.append(cnt_tmp)
         cnts2 = cnts_tmp
 
@@ -212,11 +207,6 @@ def Ret_LowestEdgePoints(gray):
         Lane_OneSide = np.zeros(gray.shape,dtype=gray.dtype)
         Lane_OneSide = cv2.drawContours(Lane_OneSide, cnts2, index, (255,255,255), 1) # [ contour = less then minarea contour, contourIDx, Colour , Thickness ]
         Lane_TwoSide = cv2.drawContours(Lane_TwoSide, cnts2, index, (255,255,255), 1) # [ contour = less then minarea contour, contourIDx, Colour , Thickness ]
-        #cv2.namedWindow("Lane_TwoSide",cv2.WINDOW_NORMAL)
-        #cv2.imshow("Lane_TwoSide",Lane_TwoSide)
-        #cv2.namedWindow("Lane_OneSide",cv2.WINDOW_NORMAL)
-        cv2.imshow("Lane_OneSide",Lane_OneSide)
-        #cv2.waitKey(0)
         if(len(cnts2)==2):
             if (index==0):
                 First_line = np.copy(Lane_OneSide)
