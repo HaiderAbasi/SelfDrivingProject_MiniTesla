@@ -19,7 +19,9 @@ pip3 install -r requirements.txt
 # where.exe python
 e.g. (C:\Program Files\Python36\python.exe)
 
-2) Install virtual environment using virtualenv from the previously found Python.
+2.a) Install virtualenv module to create virtual environments
+# pip install virtualenv 
+2.b) Install virtual environment using virtualenv from the previously found Python.
 # python -m virtualenv -p="C:\Program Files\Python36\python.exe" Path/To/Create/VirtualEnvironment
 
 3) Run Cmd Prmpt and activate environment using following cmd
