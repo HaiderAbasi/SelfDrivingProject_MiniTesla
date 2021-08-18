@@ -56,21 +56,21 @@ def MaskExtract():
     mask_ = mask != 0
 
     dst = src * (mask_[:,:,None].astype(src.dtype))
-    cv2.imshow('mask',dst)
-    cv2.imshow('mask_Y',dst_Y)
+    cv2.imshow("[[A_ColorSeg mask_Y] mask]",dst)
+    cv2.imshow("[[A_ColorSeg mask_Y] mask_Y]",dst_Y)
 
 if(config.clr_segmentation_tuning):
-    cv2.namedWindow("mask",cv2.WINDOW_NORMAL)
-    cv2.namedWindow("mask_Y",cv2.WINDOW_NORMAL)
+    cv2.namedWindow("[[A_ColorSeg mask_Y] mask]",cv2.WINDOW_NORMAL)
+    cv2.namedWindow("[[A_ColorSeg mask_Y] mask_Y]",cv2.WINDOW_NORMAL)
 
-    cv2.createTrackbar("Hue_L","mask",Hue_Low,255,OnHueLowChange)
-    cv2.createTrackbar("Lit_L","mask",Lit_Low,255,OnLitLowChange)
-    cv2.createTrackbar("Sat_L","mask",Sat_Low,255,OnSatLowChange)
+    cv2.createTrackbar("Hue_L","[[A_ColorSeg mask_Y] mask]",Hue_Low,255,OnHueLowChange)
+    cv2.createTrackbar("Lit_L","[[A_ColorSeg mask_Y] mask]",Lit_Low,255,OnLitLowChange)
+    cv2.createTrackbar("Sat_L","[[A_ColorSeg mask_Y] mask]",Sat_Low,255,OnSatLowChange)
 
-    cv2.createTrackbar("Hue_L","mask_Y",Hue_Low_Y,255,OnHueLowChange_Y)
-    cv2.createTrackbar("Hue_H","mask_Y",Hue_High_Y,255,OnHueHighChange_Y)
-    cv2.createTrackbar("Lit_L","mask_Y",Lit_Low_Y,255,OnLitLowChange_Y)
-    cv2.createTrackbar("Sat_L","mask_Y",Sat_Low_Y,255,OnSatLowChange_Y)
+    cv2.createTrackbar("Hue_L","[[A_ColorSeg mask_Y] mask_Y]",Hue_Low_Y,255,OnHueLowChange_Y)
+    cv2.createTrackbar("Hue_H","[[A_ColorSeg mask_Y] mask_Y]",Hue_High_Y,255,OnHueHighChange_Y)
+    cv2.createTrackbar("Lit_L","[[A_ColorSeg mask_Y] mask_Y]",Lit_Low_Y,255,OnLitLowChange_Y)
+    cv2.createTrackbar("Sat_L","[[A_ColorSeg mask_Y] mask_Y]",Sat_Low_Y,255,OnSatLowChange_Y)
 
 def clr_segment(HSL,lower_range,upper_range):
     # 2. Performing Color Segmentation on Given Range
@@ -161,7 +161,7 @@ def GetLaneROI(frame,minArea):
     Mid_edge_ROI,Mid_ROI_mask = LaneROI(frame,mask,minArea)#20 msec
 
     if(config.clr_segmentation_tuning):
-        cv2.imshow('mask',mask)
-        cv2.imshow('mask_Y',mask_Y)
-
+        cv2.imshow("[[A_ColorSeg mask_Y] mask]",mask)
+        cv2.imshow("[[A_ColorSeg mask_Y] mask_Y]",mask_Y)
+        
     return Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,OuterLane_SidesSeperated,Outer_Points_list
