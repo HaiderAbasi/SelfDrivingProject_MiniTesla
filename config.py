@@ -23,7 +23,7 @@ Resized_height = 240#240#180#480#240
 
 
 if debugging:
-    waitTime = 0
+    waitTime = 1
 else:
     waitTime = 1
 
