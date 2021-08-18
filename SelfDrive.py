@@ -39,7 +39,6 @@ def main():
         cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
     else:
         forward()
-        #vs = PiVideoStream((640,480),30).start()
         vs = PiVideoStream().start()
         time.sleep(2.0)
     
@@ -98,9 +97,6 @@ def main():
         if k==27:
             break
         
-        if(config.write):
-            if(config.Out_write):
-                config.out.write(frame)#8ms
         end_last = time.time()
         print("[Profiling] End Loop took ",end_last - start_last," sec <-->  ",(1/(end_last - start_last+0.00001)),"  FPS ")
 
@@ -119,11 +115,7 @@ def main():
         cap.release()
     else:
         turnOfCar()
-    if(config.write):
-        if(config.In_write):
-            config.in_q.release()
-        if(config.Out_write):
-            config.out.release()
+
     
     if (config.debugging==False):
         vs.stop() 
