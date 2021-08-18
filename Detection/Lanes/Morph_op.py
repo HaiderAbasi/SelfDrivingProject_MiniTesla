@@ -168,6 +168,66 @@ def RetClosestContour2(gray):
     
     return Lane_TwoSide, ClosestContour_Found,Outer_Points_list
 
+def Ret_LowestEdgePoints(gray):
+    
+    Outer_Points_list=[]
+    thresh = np.zeros(gray.shape,dtype=gray.dtype)
+    Lane_OneSide=np.zeros(gray.shape,dtype=gray.dtype)
+    Lane_TwoSide=np.zeros(gray.shape,dtype=gray.dtype)
+
+    _,bin_img = cv2.threshold(gray,0,255,cv2.THRESH_BINARY)
+        #Find the two Contours for which you want to find the min distance between them.
+    cnts = cv2.findContours(bin_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[1]
+    thresh = cv2.drawContours(thresh, cnts, 0, (255,255,255), 1) # [ contour = less then minarea contour, contourIDx, Colour , Thickness ]
+    # Boundary of the Contour is extracted and Saved in Thresh
+
+    Top_Row,Bot_Row = FindExtremas(thresh)
+
+    #cv2.namedWindow("thresh",cv2.WINDOW_NORMAL)
+    #cv2.imshow("thresh",thresh)
+
+    Contour_TopBot_PortionCut = ROI_extracter(thresh,(0, Top_Row + 5),(thresh.shape[1],Bot_Row-5))
+    #cv2.imshow("Contour_TopBot_PortionCut",Contour_TopBot_PortionCut)
+
+    cnts2 = cv2.findContours(Contour_TopBot_PortionCut, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[1]
+
+    LowRow_a=-1
+    LowRow_b=-1
+    
+    Euc_row=0# Row for the points to be compared
+    First_line = np.copy(Lane_OneSide)
+    cnts_tmp = []
+    if(len(cnts2)>1):
+        for index_tmp, cnt_tmp in enumerate(cnts2):
+            if((cnt_tmp.shape[0])>50):
+                cnts_tmp.append(cnt_tmp)
+        cnts2 = cnts_tmp
+
+    for index, cnt in enumerate(cnts2):
+        Lane_OneSide = np.zeros(gray.shape,dtype=gray.dtype)
+        Lane_OneSide = cv2.drawContours(Lane_OneSide, cnts2, index, (255,255,255), 1) # [ contour = less then minarea contour, contourIDx, Colour , Thickness ]
+        Lane_TwoSide = cv2.drawContours(Lane_TwoSide, cnts2, index, (255,255,255), 1) # [ contour = less then minarea contour, contourIDx, Colour , Thickness ]
+        if(len(cnts2)==2):
+            if (index==0):
+                First_line = np.copy(Lane_OneSide)
+                LowRow_a = FindLowestRow(Lane_OneSide)
+            elif(index==1):
+                LowRow_b = FindLowestRow(Lane_OneSide)
+                if(LowRow_a<LowRow_b):# First index is shorter 
+                    Euc_row=LowRow_a
+                else:
+                    Euc_row=LowRow_b
+                #print("Euc_row",Euc_row)
+                #cv2.namedWindow("First_line",cv2.WINDOW_NORMAL)
+                #cv2.imshow("First_line",First_line)
+                #cv2.waitKey(0)
+                Point_a = ExtractPoint(First_line,Euc_row)
+                Point_b = ExtractPoint(Lane_OneSide,Euc_row)
+                Outer_Points_list.append(Point_a)
+                Outer_Points_list.append(Point_b)
+    
+    return Lane_TwoSide, Outer_Points_list
+
 def ApproxDistBWCntrs(cnt,cnt_cmp):
     # compute the center of the contour
     M = cv2.moments(cnt)

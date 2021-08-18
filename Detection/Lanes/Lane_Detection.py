@@ -34,7 +34,7 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 	Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
 	#print(Mid_cnts_Rowsorted)
 	if not Mid_cnts:
-		print(" Hello there is an error")
+		print(" MidCnts Empty!!!!")
 	Mid_Rows = Mid_cnts_Rowsorted.shape[0]
 	Outer_Rows = Outer_cnts_Rowsorted.shape[0]
 
@@ -50,10 +50,7 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 
 	is_Ref_to_path_Left = ( (int(Ref_To_Path_Image.shape[1]/2) - Traj_lowP[0]) > 0 )
 	Distance_And_Midlane = cv2.bitwise_and(Ref_To_Path_Image,Midlane_copy)
-	if(config.debugging):
-		cv2.imshow("Midlane_copy",Midlane_copy)
-		cv2.imshow("Distance_Image",Ref_To_Path_Image)
-		cv2.imshow("Distance_And_Midlane",Distance_And_Midlane)
+
 	if( np.any( (cv2.bitwise_and(Ref_To_Path_Image,Midlane_copy) > 0) ) ):
 		# Midlane and CarPath Intersets (MidCrossing)
 		return True,is_Ref_to_path_Left
@@ -63,7 +60,7 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 	#  Fetching the closest outer lane to mid lane is the main goal here
 	if (config.debugging):
-		cv2.imshow("OuterLanes",OuterLanes)
+		cv2.imshow("[C_Cleaning OuterLanes Before",OuterLanes)
 	#Container for storing/returning closest Outer Lane
 
 	Offset_correction = 0
@@ -93,14 +90,8 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 			Closest_Index=0
 		elif(len(Outer_cnts)>1):
 			Closest_Index=1
-		#cv2.namedWindow("OuterLanes",cv2.WINDOW_NORMAL)
-		#cv2.imshow("OuterLanes",OuterLanes)
-		#cv2.waitKey(0)
-		if (config.debugging):
-			print("[FindClosestLane] [(len(OuterLane_Points)==2)] OuterLane_Points ",OuterLane_Points)
-			print("[FindClosestLane] [(len(OuterLane_Points)==2)] len(Outer_cnts) ",len(Outer_cnts))
-			print("[FindClosestLane] [(len(OuterLane_Points)==2)] Closest_Index ",Closest_Index)
-		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 2)
+
+		Outer_Lanes_ret = cv2.drawContours(Outer_Lanes_ret, Outer_cnts, Closest_Index, 255, 1)
 		Outer_cnts_ret = [Outer_cnts[Closest_Index]]
 		# ================================ Adding the nEW stuff =====================================
 		# The idea is to find lane points here and determine if trajectory is crossing midlane
@@ -181,7 +172,7 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 
 		#print(" Mid_lower_row = ", Mid_lowP[1])
 		#print(" Mid_higher_row = ", Mid_highP[1])
-		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,2)		
+		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,1)		
 		Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 	else:
@@ -279,8 +270,6 @@ def EstimateNonMidMask(MidEdgeROi):
 		hull_list.append(hull)
 		# Draw contours + hull results
 		Mid_Hull_Mask = cv2.drawContours(Mid_Hull_Mask, hull_list, 0, 255,-1)
-		#cv2.namedWindow("Mid_Hull_Mask",cv2.WINDOW_NORMAL)
-		#cv2.imshow("Mid_Hull_Mask",Mid_Hull_Mask)
 	Non_Mid_Mask=cv2.bitwise_not(Mid_Hull_Mask)
 	return Non_Mid_Mask
 
@@ -312,7 +301,7 @@ def DrawProbablePath(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Of
 	Lanes_combined = cv2.bitwise_or(Outer_Lane,Mid_lane)
 	#cv2.namedWindow("Lanes_combined",cv2.WINDOW_NORMAL)
 	if config.Testing:
-		cv2.imshow("9.5: Lanes_combined",Lanes_combined)
+		cv2.imshow("[D_DataExt Lanes_combined]",Lanes_combined)
 	#Creating an empty image
 	ProjectedLane = np.zeros(Lanes_combined.shape,Lanes_combined.dtype)
 	cnts = cv2.findContours(Lanes_combined,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[1]
@@ -324,7 +313,7 @@ def DrawProbablePath(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Of
 		cv2.fillConvexPoly(ProjectedLane, cnts, 255)
 		#cv2.namedWindow("ProjectedLane",cv2.WINDOW_NORMAL)
 	if config.Testing:
-		cv2.imshow("9.8: ProjectedLane",ProjectedLane)
+		cv2.imshow("[D_DataExt ProjectedLane]",ProjectedLane)
 
 		Mid_less_Mask = EstimateNonMidMask(MidEdgeROi)
 		ProjectedLane = cv2.bitwise_and(Mid_less_Mask,ProjectedLane)
@@ -401,47 +390,38 @@ def Detect_Lane(frame):
 	Distance = -1000
 	Curvature = -1000
 	frame_cropped = frame[config.CropHeight_resized_crop:,:]
-	
-	if(config.write):
-		if(config.In_write):
-			config.in_q.write(frame)
 			
 	if config.detect:
-		if (config.debugging):
-			cv2.imshow('Vid',frame)  
 			
 		start_getlanes = time.time()
         # Extracting Outer and Middle lanes using colour Segmentation in HSL mode
-		Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,_,OuterLane_TwoSide,OuterLane_Points = GetLaneROI(frame_cropped,config.minArea_resized)#64 ms
+		Mid_edge_ROI,Mid_ROI_mask,Outer_edge_ROI,OuterLane_TwoSide,OuterLane_Points = GetLaneROI(frame_cropped,config.minArea_resized)#64 ms
 		end_getlanes = time.time()
 		print("[Profiling] GetLane Loop took ",end_getlanes - start_getlanes," sec <-->  ",(1/(end_getlanes - start_getlanes+0.00001)),"  FPS ")
-		if(config.debugging):
-			cv2.imshow('Mid_edge_ROI',Mid_edge_ROI)	
 
         # Using polyfit to estimate the trajectory of outer lane
 		Mid_trajectory = Mid_edge_ROI.copy()
-		if(config.debugging):
-			cv2.imshow('Mid_trajectory before',Mid_trajectory)	
 		# Keeping only the Estimated trajectory upto the ROI we decided
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_ROI_mask)# 0.1ms
-		if(config.debugging):
-			cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)
+		# 3. Dilating Segmented ROI's
+		kernel = cv2.getStructuringElement(shape=cv2.MORPH_ELLIPSE, ksize=(3,3))
+		Mid_trajectory = cv2.morphologyEx(Mid_trajectory, cv2.MORPH_DILATE, kernel)
+		Mid_trajectory = cv2.morphologyEx(Mid_trajectory, cv2.MORPH_ERODE, kernel)
+		#if(config.debugging):
+			#cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)
 		# Remove small contours and keep only largest
 		Mid_trajectory_largest = BWContourOpen_speed(Mid_trajectory,config.MaxDist_resized)#13msec
 		if(config.debugging):
-			cv2.imshow('Mid_trajectory',Mid_trajectory)
-			cv2.imshow('Mid_trajectory_largest',Mid_trajectory_largest)
+			cv2.imshow('[B_Est Mid_trajectory Edge]',Mid_trajectory)
+			cv2.imshow('[B_Est Mid_trajectory_Estimated]',Mid_trajectory_largest)
 		
 		# Once we have the mid and outer lanes Only keep the closest outer lane to mid lane
 		OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
 
         # Extend Short Lane (Either Mid or Outer)So that both has same location of foot
 		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
-		
+		cv2.imshow('[C_Cleaning OuterLane_Cleaned]',OuterLane_OneSide)		
 		Mid_trajectory = cv2.bitwise_and(Mid_trajectory,Mid_trajectory_largest)
-		#if(config.debugging):
-			#cv2.imshow('Mid_edge_ROI before',Mid_edge_ROI)
-			#cv2.imshow('Mid_trajectory after',Mid_trajectory)
 
 		#Mid_edge_ROI = RefineMidEdgeROi(Mid_trajectory,Mid_ROI_mask,Mid_edge_ROI)#6ms
 		Mid_edge_ROI = Mid_trajectory.copy()

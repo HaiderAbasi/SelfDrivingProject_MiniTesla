@@ -10,7 +10,7 @@ import cv2
 import time
 
 if (config.debugging):
-	cv2.namedWindow('Vid',cv2.WINDOW_NORMAL)
+	#cv2.namedWindow('Vid',cv2.WINDOW_NORMAL)
 	cap = cv2.VideoCapture(config.vid_path)
 	fps = cap.get(cv2.CAP_PROP_FPS)
 	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -36,10 +36,10 @@ def main():
     print("cv2.__version__ = ",cv2.__version__)
 
     if (config.debugging):
-        cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
+        #cv2.createTrackbar('Video_pos','Vid',Video_pos,duration,OnVidPosChange)
+        print("Debugging on Local Video")
     else:
         forward()
-        #vs = PiVideoStream((640,480),30).start()
         vs = PiVideoStream().start()
         time.sleep(2.0)
     
@@ -98,9 +98,6 @@ def main():
         if k==27:
             break
         
-        if(config.write):
-            if(config.Out_write):
-                config.out.write(frame)#8ms
         end_last = time.time()
         print("[Profiling] End Loop took ",end_last - start_last," sec <-->  ",(1/(end_last - start_last+0.00001)),"  FPS ")
 
@@ -119,11 +116,7 @@ def main():
         cap.release()
     else:
         turnOfCar()
-    if(config.write):
-        if(config.In_write):
-            config.in_q.release()
-        if(config.Out_write):
-            config.out.release()
+
     
     if (config.debugging==False):
         vs.stop() 
