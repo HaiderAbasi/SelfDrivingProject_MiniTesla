@@ -45,13 +45,13 @@ We will make things so simplified with our recorded lectures that you can easily
 **[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
 ## Using this Repository
+* You can use this repository on you windows or linux/Raspberry pi 
+* Get the **Environment_Setup.txt** in main repository
+* All commands are written for linux and windows respectively
+* If the repository is not working for you. Watch the free preview video on our course page 
+ in **Section # 6 : How to use Code** where full explaination is given on setting up this repository.
+  * **[[Link to course page]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
-Just fork the repository on your Raspebery pi and install all required packages mentioned above.
-
-Run with 
-  ```sh
-  python3 {your_directory}/SelfDrive.py 
-  ```
 
 ## Instructors
 
