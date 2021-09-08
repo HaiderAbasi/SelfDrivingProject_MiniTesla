@@ -86,7 +86,7 @@ pip3 install -r requirements.txt
 ----
 
 ## Link to the Course
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/3D%20model%20file/Tesla%20Self%20Driving%20Car.png)
+![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/thumbnails/TSDC.png)
 
 ----
 ## Udemy
