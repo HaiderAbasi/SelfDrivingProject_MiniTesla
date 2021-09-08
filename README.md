@@ -73,16 +73,16 @@ pip3 install -r requirements.txt
 ----
 
 ## Features
-#### **Track Construction**
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/track.gif)
-#### **Car Development**
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/car_preparation.gif)
-#### **Lane Detection**
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/lane_detection.gif)
-#### **Sign Detection and Classification**
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/sign_detection.gif)
-#### **Visual Control**
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/visual_control.gif)
+* **Track Construction**<br/><br/>
+  - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/track.gif)<br/><br/>
+* **Car Development**<br/><br/>
+  - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/car_preparation.gif)<br/><br/>
+* **Lane Detection**<br/><br/>
+  - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/lane_detection.gif)<br/><br/>
+* **Sign Detection and Classification**<br/><br/>
+  - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/sign_detection.gif)<br/><br/>
+* **Visual Control**<br/><br/>
+  - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/visual_control.gif)
 ----
 
 ## Link to the Course
