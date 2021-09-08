@@ -6,9 +6,9 @@ Click on the Image to start view the intro video .
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#About-this-Repository">About The Project</a></li>
-    <li><a href="#Pre-Course-Requirments">Pre-Course Requirments</a></li>
     <li><a href="#Using-this-Repository">Using this Repository</a></li>
     <li><a href="#Features">Features</a></li>
+    <li><a href="#Pre-Course-Requirments">Pre-Course Requirments</a></li>
     <li><a href="#Instructors">Instructors</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -26,24 +26,8 @@ We will make things so simplified with our recorded lectures that you can easily
 ## Model ready for 3D printing 
 - **Tesla-Like Self Driving Car** : Custom Created Ackerman Drive from Scratch for the Course 
 
-![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/car_building.gif)
+-    ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/car_building.gif)
 
-----
-
-## Pre-Course Requirments:
-
-**Software Requirements**
-* Our course for deep undertanding of our code
-* Python 3.6 
-* Opencv 4.2
-* Motivated mind for a huge programming Project :) 
-
-**Hardware Requirments**
-* Raspberrypi 3 or greater
-* Geared Dc motors 12V (single)
-* 12V lipo Battery
-* Base of car + Sterring mechanism
-* You Can get 3D print the model of Tesla Mini Truck in Fusion 360 Folder
 ----
 
 ## Using this Repository
@@ -79,10 +63,28 @@ pip3 install -r requirements.txt
   - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/car_preparation.gif)<br/><br/>
 * **Lane Detection**<br/><br/>
   - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/lane_detection.gif)<br/><br/>
-* **Sign Detection and Classification**<br/><br/>
+* **Sign Detection and Tracking**<br/><br/>
   - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/sign_detection.gif)<br/><br/>
 * **Visual Control**<br/><br/>
   - ![alt text](https://github.com/HaiderAbasi/SelfDrivingProject_MiniTesla/blob/master/modeling%20files%20and%20Images/gif/visual_control.gif)
+
+----
+
+## Pre-Course Requirments:
+
+**Software Requirements**
+* Our course for deep undertanding of our code
+* Python 3.6 
+* Opencv 4.2
+* Motivated mind for a huge programming Project :) 
+
+**Hardware Requirments**
+* Raspberrypi 3 or greater
+* Geared Dc motors 12V (single)
+* 12V lipo Battery
+* Base of car + Sterring mechanism
+* You Can get 3D print the model of Tesla Mini Truck in Fusion 360 Folder
+
 ----
 
 ## Link to the Course
