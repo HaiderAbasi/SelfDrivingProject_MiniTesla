@@ -9,6 +9,7 @@ Click on the Image to start view the intro video .
     <li><a href="#Using-this-Repository">Using this Repository</a></li>
     <li><a href="#Features">Features</a></li>
     <li><a href="#Pre-Course-Requirments">Pre-Course Requirments</a></li>
+    <li><a href="#Notes">Notes</a></li>
     <li><a href="#Instructors">Instructors</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -95,7 +96,9 @@ pip3 install -r requirements.txt
 ## Udemy
 **[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
 
-
+----
+## Notes
+**[[PDF]](https://www.mediafire.com/file/tzq4ako0as7umue/SDC_Notes_Pdf.zip/file)**
 
 ----
 
