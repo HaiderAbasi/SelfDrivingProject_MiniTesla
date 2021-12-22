@@ -24,8 +24,8 @@ loopCount=0
 Resized_width = 320#320#240#640#320 # Control Parameter
 Resized_height = 240#240#180#480#240
 
-in_q = cv2.VideoWriter( os.path.abspath("Detection/Lanes/Results/in_new.avi") , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
-out  = cv2.VideoWriter( os.path.abspath('Detection/Lanes/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+in_q = cv2.VideoWriter( os.path.abspath("SW Modular Scripts/Detection/Lanes/Results/in_new.avi") , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
+out  = cv2.VideoWriter( os.path.abspath('SW Modular Scripts/Detection/Lanes/Results/out_new.avi') , cv2.VideoWriter_fourcc('M','J','P','G'), 30, (Resized_width,Resized_height))
 
 if debugging:
     waitTime = 1
