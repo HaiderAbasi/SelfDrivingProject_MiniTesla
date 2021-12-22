@@ -1,24 +1,26 @@
 import cv2
 import os
-
+from Detection.Lanes.a_Segmentation.colour_segmentation_final import Segment_Colour
 
 
 def main():
-    cap = cv2.VideoCapture(os.path.abspath("data/vids/signs_forward.mp4"))
-    waitTime = 0
+
+    Relative_vid_path = "SW Modular Scripts/data/vids/Lane_vid.avi"
+    cap = cv2.VideoCapture(os.path.abspath(Relative_vid_path))
+    waitTime = 1
 
     while(1):
         ret,img = cap.read()
-        if ret:
-            img = cv2.resize(img,(320,240))
-        else:
+        if not ret:
+            print("vid Not found")
             break
+        else:
+            print("### Vid Found ###")
+
 
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   TESTING   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
-
-        #cv2.imshow("Frame",img)
+        cv2.imshow("Frame",img)
         k = cv2.waitKey(waitTime)
         if k==27:
             break
