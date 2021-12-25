@@ -1,13 +1,19 @@
 ## This is a Quick guide to setup the environment to run SelfDrive.py
 
->>>>>>>>>>>>>>>> LINUX Commands  <<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>> LINUX OR Rasbperry PI Commands  <<<<<<<<<<<<<<<<<<
 
-python3 -m pip install --user virtualenv
+1) python3 -m pip install --user virtualenv
 
-python3 -m virtualenv sdc_env
+2) python3 -m virtualenv sdc_env
 
-source sdc_env/bin/activate
+3) source sdc_env/bin/activate
 
+4) ## Installing the modules will be different for Rasbperry Pi and different for Linux 
+
+# For Pi User:
+pip3 install -r requirements_pi.txt
+         
+# For Linux User: 
 pip3 install -r requirements.txt
 
 >>>>>>>>>>>>>>>> Windows Commands  <<<<<<<<<<<<<<<<
