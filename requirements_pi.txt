@@ -34,7 +34,7 @@ six==1.15.0
 https://github.com/bitsy-ai/tensorflow-arm-bin/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_armv7l.whl
 termcolor==1.1.0
 typing-extensions==3.7.4.3
-urllib3==1.26.4
+urllib3==1.26.5
 Werkzeug==1.0.1
 wrapt==1.12.1
 zipp==3.4.1
