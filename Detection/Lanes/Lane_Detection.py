@@ -106,7 +106,7 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 			OuterLanes = np.zeros_like(OuterLanes)#Empty outerLane
 		else:
 			#If no fllor crossing return results
-			return Outer_Lanes_ret ,Outer_cnts_ret, Mid_cnts,0
+			return MidLane,Outer_Lanes_ret ,Outer_cnts_ret, Mid_cnts,0
 	elif( Mid_cnts and np.any(OuterLanes>0) ):
 		# Midlane and OuterLanes are both present but there was no OuterLanePoints Were not 2
 		IsPathCrossing , IsCrossingLeft = IsPathCrossingMid(MidLane,Mid_cnts,Outer_cnts)
@@ -118,7 +118,8 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 			if (config.debugging):
 				print("[FindClosestLane] [np.any(OuterLanes>0)] Path are not crossing --> Ret as it is")
 			#If no fllor crossing return results
-			return OuterLanes ,Outer_cnts, Mid_cnts,0		
+			return MidLane,OuterLanes ,Outer_cnts, Mid_cnts,0
+
 
 	#Condition 2 : if MidLane is present but no Outlane detected
 	# Create Outlane on Side that represent the larger Lane as seen by camera
@@ -174,9 +175,52 @@ def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
 		#print(" Mid_higher_row = ", Mid_highP[1])
 		OuterLanes = cv2.line(OuterLanes,LanePoint_lower,LanePoint_top,255,1)		
 		Outer_cnts = cv2.findContours(OuterLanes, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
-		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+		return MidLane,OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+	
+	elif Outer_cnts:
+		# Only OuterLane is Present
+		# Draw Midlane on Left
+		if (config.debugging):
+			print("[FindClosestLane] [OuterLanes is Present] OuterLanes Not empty but points are empty")
+		
+
+		# Condition where MidCnts are detected 
+		Outer_cnts_Rowsorted = Cord_Sort(Outer_cnts,"rows")
+		Outer_Rows = Outer_cnts_Rowsorted.shape[0]
+
+		# setting OuterLane_lowestPoint_Row to MaxRows of Image
+		Outer_lowP = Outer_cnts_Rowsorted[Outer_Rows-1,:]
+		Outer_lowP[1] = OuterLanes.shape[0]
+		Outer_highP = Outer_cnts_Rowsorted[0,:]
+		
+		# Get the col of outerlane lowest point
+		Outer_low_Col = Outer_lowP[0]
+		if(Outer_low_Col < int(OuterLanes.shape[1]/2)):
+			# OuterLane on left side of Col/2 of image --> Car has gone overboard stop!!
+			#Empty outerLane and outercnts
+			OuterLanes = np.zeros_like(OuterLanes)
+			Outer_cnts = Mid_cnts
+			return MidLane,OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+
+				
+		# Draw Midlane on Left side (Default)
+		low_Col=0
+		high_Col=0
+		Offset_correction = -20
+
+		# Draw Midlane on Left side (Default) and height same as outerlane
+		Est_mid_lower_pt    =  (low_Col , int( Outer_lowP[1] ) )
+		Est_mid_higher_pt   =  (high_Col, int( Outer_highP[1]) )
+
+		# Drawing the midlane line on the left side(default) with height as of outerlane
+		MidLane = cv2.line(MidLane,Est_mid_lower_pt,Est_mid_higher_pt,255,1)		
+		# Extracting the approximated midlane contours
+		Mid_cnts = cv2.findContours(MidLane, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+
+		return MidLane,OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+
 	else:
-		return OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
+		return MidLane,OuterLanes, Outer_cnts, Mid_cnts, Offset_correction
 
 def ExtendBothLane(Lane,OuterLane,Lane_RowSorted,RefLane_RowSorted):
 
@@ -416,7 +460,7 @@ def Detect_Lane(frame):
 			cv2.imshow('[B_Est Mid_trajectory_Estimated]',Mid_trajectory_largest)
 		
 		# Once we have the mid and outer lanes Only keep the closest outer lane to mid lane
-		OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
+		Mid_trajectory_largest,OuterLane_OneSide,Outer_cnts_oneSide,Mid_cnts,Offset_correction = FindClosestLane(OuterLane_TwoSide,Mid_trajectory_largest,OuterLane_Points)#3ms
 
         # Extend Short Lane (Either Mid or Outer)So that both has same location of foot
 		Mid_trajectory_largest,OuterLane_OneSide = ExtendShortLane(Mid_trajectory_largest,Mid_cnts,Outer_cnts_oneSide,OuterLane_OneSide)
