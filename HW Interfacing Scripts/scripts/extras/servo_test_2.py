@@ -30,7 +30,7 @@ def servoWrite(angle):
         angle = MIN_ANGLE
     elif (angle > MAX_ANGLE):
         angle = MAX_ANGLE
-    pwmChannel.ChangeDutyCyle(map(angle, 0, 180, SERVO_MIN_DUTY, SERVO_MAX_DUTY))
+    pwmChannel.ChangeDutyCyle(mapValue(angle, 0, 180, SERVO_MIN_DUTY, SERVO_MAX_DUTY))
      
 def loop():
     while True:
