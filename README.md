@@ -55,7 +55,7 @@ pip3 install -r requirements.txt
 #### **Windows Setup**
 * Get the **Environment_Setup.txt** in main repository for windows setup guide
 * If the repository is not working for you. Watch the free preview video on our course page  in **Section # 6 : How to use Code** where full explaination is given on setting up this repository.
-  * **[[Link to course page]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
+  * **[[Link to course page]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=APRIL_END)**
 ----
 
 ## Features
@@ -94,7 +94,7 @@ pip3 install -r requirements.txt
 
 ----
 ## Udemy
-**[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GITHUB_DISCOUNT)**
+**[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=APRIL_END)**
 
 ----
 ## Notes
