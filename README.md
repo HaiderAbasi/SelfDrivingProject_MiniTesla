@@ -94,7 +94,7 @@ pip3 install -r requirements.txt
 
 ----
 ## Udemy
-**[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=APRIL_END)**
+**[[Discounted Link]](https://www.udemy.com/course/autonomous-car-deep-learning-computer-vision-for-beginners/?couponCode=GET1299)**
 
 ----
 ## Notes
