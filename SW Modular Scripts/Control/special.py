@@ -94,5 +94,12 @@ def Steer(Distance,Curvature,frame , Mode , Tracked_class):
         cv2.putText(frame,str(angle_speed_str),(20,20),cv2.FONT_HERSHEY_DUPLEX,0.4,(0,0,255),1)
 
 def Drive_Car(Current_State):
+    """Act on extracted information based on the SDC control mechanism
+
+    Args:
+        Current_State (List): information extracted from SDC surroundings 
+                              E.g. (Information regarding the lane boundaries for lane assist + 
+                                    Information regarding the traffic signs for cruise control)
+    """    
     [distance, Curvature, frame_disp , Mode , Tracked_class] = Current_State
     Steer(distance,Curvature,frame_disp , Mode , Tracked_class)    

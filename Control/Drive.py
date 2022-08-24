@@ -17,5 +17,12 @@ def Steer(Distance,Curvature,frame , Mode , Tracked_class):
                 beInLane(int(frame.shape[1]/4), Distance,Curvature  , Mode , Tracked_class)       
 
 def Drive_Car(Current_State):
+    """Act on extracted information based on the SDC control mechanism
+
+    Args:
+        Current_State (List): information extracted from SDC surroundings 
+                              E.g. (Information regarding the lane boundaries for lane assist + 
+                                    Information regarding the traffic signs for cruise control)
+    """    
     [distance, Curvature, frame_disp, Mode, Tracked_class] = Current_State
     Steer(distance, Curvature,frame_disp, Mode, Tracked_class)

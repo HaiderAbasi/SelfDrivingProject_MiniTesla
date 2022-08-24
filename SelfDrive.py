@@ -33,6 +33,12 @@ def OnVidPosChange(val):
 	cap.set(cv2.CAP_PROP_POS_MSEC,Video_pos*1000)
 
 def main():
+    """ 
+        SelfDrive is basically the start point, On running SelfDrive...
+        PiCar: Moves autonomously around the track
+        Windows/Linux: Helps to debug the Self-Drive algorithm on 
+                       pre-saved video of track
+    """    
     print("cv2.__version__ = ",cv2.__version__)
 
     if (config.debugging):

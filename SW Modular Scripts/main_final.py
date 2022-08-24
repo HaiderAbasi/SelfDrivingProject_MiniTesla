@@ -25,7 +25,12 @@ if Use_Threading:
 
 
 def main():
-
+    """Main file build during live coding sessions for SDC
+       Note: This main is a reference for people to looking to live code 
+             each module step-by-step
+             
+             (For people just looking to test the Project: Run SelfDrivingProject_MiniTesla/SelfDrive.py)
+    """
     if Use_Threading:
         # start the file video stream thread and allow the buffer to fill
         PI_vs = PiVideoStream().start()

@@ -242,7 +242,18 @@ def ApproxDistBWCntrs(cnt,cnt_cmp):
     Centroid_b=(cX_cmp,cY_cmp)
     return minDist,Centroid_a,Centroid_b
 
-def BWContourOpen_speed(BW,MaxDistance):
+def Estimate_MidLane(BW,MaxDistance):
+    """Estimate the mid-lane trajectory based on the detected midlane (patches) mask
+
+    Args:
+        BW (numpy_1d_array): Midlane (patches) mask extracted from the GetLaneROI()
+        MaxDistance (int): max distance for a patch to be considered part of the midlane 
+                                      else it is noise
+
+    Returns:
+        numpy_1d_array: estimated midlane trajectory (mask)
+    """    
+
     #cv2.namedWindow("BW_zero",cv2.WINDOW_NORMAL)
     BW_zero= cv2.cvtColor(BW,cv2.COLOR_GRAY2BGR)
     #Find the two Contours for which you want to find the min distance between them.

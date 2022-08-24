@@ -5,7 +5,7 @@ import numpy as np
 import time
 from Detection.Lanes.utilities import findLineParameter,findlaneCurvature,Distance_
 from Detection.Lanes.Lane_Extractor import GetLaneROI
-from Detection.Lanes.Morph_op import FindExtremas,BWContourOpen_speed
+from Detection.Lanes.Morph_op import FindExtremas,Estimate_MidLane
 
 
 def Cord_Sort(cnts,order):
@@ -58,7 +58,21 @@ def IsPathCrossingMid(Midlane,Mid_cnts,Outer_cnts):
 		return False,is_Ref_to_path_Left
 
 def FindClosestLane(OuterLanes,MidLane,OuterLane_Points):
-	#  Fetching the closest outer lane to mid lane is the main goal here
+	"""Fetching closest outer lane (side) to mid lane 
+
+	Args:
+		OuterLanes (numpy_1d_array): detected outerlane
+		MidLane (numpy_1d_array): estimated midlane trajectory
+		OuterLane_Points (list): points one from each side of detected outerlane
+
+	Returns:
+		numpy_1d_array: outerlane (side) closest to midlane
+		list[List[tuple]]: refined contours of outerlane
+		list[List[tuple]]: refined contours of midlane
+		int: Offset to compensate for **removal of either midlane or outerlane 
+			                 **(incase of false-positives)
+	"""	
+
 	if (config.debugging):
 		cv2.imshow("[C_Cleaning OuterLanes Before",OuterLanes)
 	#Container for storing/returning closest Outer Lane
@@ -361,7 +375,24 @@ def DrawProbablePath(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Of
 		return Outer_Lane,drawn
 
 def fetch_LaneInformation(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,frame,Offset_correction):
+	"""Extracts the required data from the detected lane lines (outer and middle)
 
+	Args:
+		Outer_Lane (numpy_1d_array): detected outerlane (closest side) [mask]
+		Mid_lane (numpy_1d_array): estimated midlane [mask]
+		Mid_cnts (List[List[tuple]]): contours representing the midlane boundary
+		Outer_cnts (List[List[tuple]]):  contours representing the outerlane boundary
+		MidEdgeROi (numpy_1d_array): detected outerlane edge
+		frame (numpy_3d_array): Prius front-cam view (BGR)
+		Offset_correction (int): offset to apply to computed lane information [incase either
+		                            midlane or outerlane was missing or removed (false-positives)]
+
+	Returns:
+		distance    (int): car_front <===distance===> ideal position on road 
+		curvature (angle): car <===angle===> roads_direction
+                           e.g. car approaching a right turn so road direction is around or less then 45 deg
+						   				cars direction is straight so it is around 90 deg
+	"""	
 	Out_image = frame
 	Lanes_combined = cv2.bitwise_or(Outer_Lane,Mid_lane)
 	cnts = cv2.findContours(Lanes_combined,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[1]
@@ -386,7 +417,17 @@ def fetch_LaneInformation(Outer_Lane,Mid_lane,Mid_cnts,Outer_cnts,MidEdgeROi,fra
 	
 	
 def Detect_Lane(frame):
+	""" Extract required data from the lane lines representing road lane boundaries.
 
+	Args:
+		frame (numpy nd array): Prius front-cam view
+
+	Returns:
+		distance    (int): car_front <===distance===> ideal position on road 
+		curvature (angle): car <===angle===> roads_direction
+                           e.g. car approaching a right turn so road direction is around or less then 45 deg
+						   				cars direction is straight so it is around 90 deg
+	"""
 	Distance = -1000
 	Curvature = -1000
 	frame_cropped = frame[config.CropHeight_resized_crop:,:]
@@ -410,7 +451,7 @@ def Detect_Lane(frame):
 		#if(config.debugging):
 			#cv2.imshow('Mid_ROI_mask',Mid_ROI_mask)
 		# Remove small contours and keep only largest
-		Mid_trajectory_largest = BWContourOpen_speed(Mid_trajectory,config.MaxDist_resized)#13msec
+		Mid_trajectory_largest = Estimate_MidLane(Mid_trajectory,config.MaxDist_resized)#13msec
 		if(config.debugging):
 			cv2.imshow('[B_Est Mid_trajectory Edge]',Mid_trajectory)
 			cv2.imshow('[B_Est Mid_trajectory_Estimated]',Mid_trajectory_largest)

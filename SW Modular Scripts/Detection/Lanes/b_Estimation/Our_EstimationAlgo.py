@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+
 def Distance_(a,b):
     return math.sqrt( ( (a[1]-b[1])**2 ) + ( (a[0]-b[0])**2 ) )
 
@@ -40,6 +41,17 @@ def RetLargestContour(gray):
 
 
 def Estimate_MidLane(BW,MaxDistance):
+    """Estimate the mid-lane trajectory based on the detected midlane (patches) mask
+
+    Args:
+        BW (numpy_1d_array): Midlane (patches) mask extracted from the GetLaneROI()
+        MaxDistance (int): max distance for a patch to be considered part of the midlane 
+                                      else it is noise
+
+    Returns:
+        numpy_1d_array: estimated midlane trajectory (mask)
+    """
+    
     #cv2.namedWindow("BW_zero",cv2.WINDOW_NORMAL)
     BW_zero= cv2.cvtColor(BW,cv2.COLOR_GRAY2BGR)
 

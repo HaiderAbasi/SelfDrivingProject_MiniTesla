@@ -16,7 +16,17 @@ from Detection.Lanes.d_LaneInfo_Extraction.GetStateInfoandDisplayLane import Fet
 
 
 def Detect_Lane(img):
-            
+        """ Extract required data from the lane lines representing road lane boundaries.
+
+        Args:
+                frame (numpy nd array): Prius front-cam view
+
+        Returns:
+                distance    (int): car_front <===distance===> ideal position on road 
+                curvature (angle): car <===angle===> roads_direction
+                                e.g. car approaching a right turn so road direction is around or less then 45 deg
+                                                                                cars direction is straight so it is around 90 deg
+        """       
         # >>>>>>>>>>>>>>>>>>>>>>>> Optimization No 2 [CROPPING] <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         img_cropped = img[config.CropHeight_resized:,:]
 

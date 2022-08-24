@@ -1,7 +1,6 @@
 #git push from raspberry pi
 #Control Variables for 3c_threaded_Mod4
 import os
-import cv2
 
 detect = 1 # Set to 1 for Lane detection
 
@@ -23,7 +22,7 @@ Resized_height = 240#240#180#480#240
 
 
 if debugging:
-    waitTime = 1
+    waitTime = 30
 else:
     waitTime = 1
 
