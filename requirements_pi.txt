@@ -35,7 +35,7 @@ https://github.com/bitsy-ai/tensorflow-arm-bin/releases/download/v2.4.0/tensorfl
 termcolor==1.1.0
 typing-extensions==3.7.4.3
 urllib3==1.26.4
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 wrapt==1.12.1
 zipp==3.4.1
 imutils
